@@ -1,24 +1,109 @@
-
-body {
-    font-size: 22px;
-    background-color: rgb(236, 237, 239);
-    color: rgb(34, 33, 33);
-    padding: 0 20px 20px 20px;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
+body {
+    background-color: rgb(236, 237, 239);
+}
+
+h1 {
+    font-size: 4rem;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.container {
+    border: 2px dashed red;
+    padding: 1rem;
+    margin: 2rem 2rem 5rem 2rem;
+
+}
+
+.imContainer{
+    position: relative;
+    text-align: center;
+    border: 2px dashed green;
+  }
+
 
 .welcomeWord {
     color: rgb(0, 0, 0);
-    font-family:'Times New Roman', Times, serif;
+    font-family:sans-serif;
+    font-size: 2rem;
 }
+
+
+.intro {
+    border: 2px dashed green;
+    font-size: 1.5rem;
+    margin-top: 2rem;
+}
+
+.introImage{
+    border: 2px dashed blue;
+}
+
+.course1{
+    border: 2px dashed blue;
+    
+}
+
+.course1:hover{
+    opacity: 0.3;
+}
+
+
+.text {
+    position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.middle{
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+.course2{
+    border: 2px dashed blue;
+    opacity: 1;
+    
+}
+
+.course2:hover{
+    border: 2px dashed blue;
+    opacity: 0.3;
+}
+
+.course3{
+    border: 2px dashed blue;
+}
+
+.course3:hover{
+    border: 2px dashed blue;
+    opacity: 0.3;
+}
+
+
 
 a {
     color: rgb(172, 110, 199);
+    
 }
 
 a :visited{
     color: rgb(1, 1, 1)
 }
 a:hover, a:active {
-    color: rgb(172, 110, 199);
+    color: rgb(127, 69, 151);
 }
 
