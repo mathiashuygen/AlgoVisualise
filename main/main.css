@@ -98,9 +98,10 @@ h1 {
 
 .menuBar {
     background-color: black;
+    height: 2.5rem;
     display: flex;
     justify-content: center;
-    gap: 3rem;
+    gap: 1rem;
     font-size: 2rem;
 }
 

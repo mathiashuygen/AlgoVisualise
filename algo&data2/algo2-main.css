@@ -1,19 +1,12 @@
-html {
-    font-size: 22px
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+img{
+    display: block;
+}
 body {
-    background-color: rgb(0, 51, 153);
-    color: rgb(255, 102, 0)
-}
-
-a {
-    color: antiquewhite;
-}
-
-a :visited{
-    color: rgb(1, 1, 1)
-}
-a:hover, a:active {
-    color: aquamarine;
+    background-color: rgb(236, 237, 239);
 }
