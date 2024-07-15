@@ -25,9 +25,10 @@ h1 {
 
 
 .welcomeWord {
-    color: rgb(0, 0, 0);
+    color: white;
     font-family:sans-serif;
-    font-size: 2rem;
+    font-size: 4rem;
+    text-align: center;
 }
 
 
@@ -35,29 +36,17 @@ h1 {
 
 .intro {
     font-size: 1.5rem;
-
     margin-top: 2rem;
 }
 
 
-.comboContainer{
-    border: 2px dashed purple;
-    height: 100vh;
-    background-image: radial-gradient(rgb(251, 251, 251), white);
-}
-
-.wrappingContainer{
-    background-image: url(../images/graph1.png), linear-gradient(rgb(143, 143, 255), white, rgb(89, 78, 79));
-    background-repeat: repeat;
-    background-position: top center;
-}
-
 
 .introContainer {
-    border-bottom: 2px solid black;
+
     background-color: hsla(210, 62%, 26%, 0.446);
     padding: 1rem;
-    min-height: 25vh;
+    min-height: 15vh;
+    width: 100%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -70,35 +59,120 @@ h1 {
 
 
 .container {
-    border: 2px dashed red;
     padding: 1rem;
-    margin: 2rem 2rem 5rem 2rem;
+    margin-top: 10rem;
     position: relative;
 }
 
 
+
+
+.comboContainer{
+    height: 100vh;
+    background-color: rgb(0, 51, 153);
+    color: white;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.wrappingContainer{
+    background-image: url(../images/graph1.png), linear-gradient(rgb(143, 143, 255), white, rgb(89, 78, 79));
+    background-repeat: repeat;
+    background-position: top center;
+
+}
+
+
+
+
+
+.menuBar {
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    font-size: 2rem;
+}
+
+.menuSection{
+    color: white;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+
+.menuSection:hover{
+    background-color: rgb(255, 102, 0);
+    transition: 0.25s;
+}
+
+
+.menuLink{
+    text-decoration: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.image{
+    border: 3px solid black;
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: 0.25s ease;
+    backface-visibility: hidden;
+}
+
 .imageContainer{
-    border: 2px dashed green;
+   
     height: 30vh;
     width: 90vw;
+    margin-top: 5rem;
     margin-inline: auto;
     position: relative;
     display: flex;
-    gap: 8rem;
     justify-content: space-evenly;
     align-items: center;
   }
 
 
 
-
-
-
-
 .imageBox{
-    border: 2px dashed red;
     position: relative;
     margin-top: 1rem;
+    
 }
 
 .imageBox:hover .image{
@@ -110,30 +184,38 @@ h1 {
 }
 
 
-.image{
-    width: 100%;
-    height: auto;
-    backface-visibility: hidden;
-}
-
-
-
-
-
-
 
 figcaption{
     position: absolute;
+    opacity: 0;
+    transition: 0.25s;
     font-size: 100%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgb(76, 72, 182);
+    -ms-transform: translate(-50%, -50%);
+    background-color: hsla(24, 100%, 50%, 0.917)
 }
 
 figcaption:hover{
     opacity: 1;
 }
+
+
+
+
+
+footer{
+    padding-top: 300%;
+    position: relative;
+    float: right;
+}
+
+
+
+
+
+
 
 a {
     color: rgb(222, 218, 224);
