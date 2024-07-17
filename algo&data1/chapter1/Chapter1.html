@@ -16,9 +16,40 @@
 <body>
     <h1>Chapter 1 algorithms</h1>
     <hr>
-    <label for="stringField">Enter a string:</label>
-    <input type="text" id="stringField" class="stringField">
-    <input type="submit" id="stringSubmit" class="stringSubmit">
+
+
+    <div class="selector">
+        <label for="AlgorithmPicker">Choose algorithm:</label>
+        <select name="AlgorithmPicker" id="algorithms" class="algorithmPicker">
+
+            <option value="BruteForce">Brute Force</option>
+            <option value="QuickSearch">QuickSearch</option>
+            <option value="KMP">KMP</option>
+
+        </select>
+    </div>
+
+    <canvas class="AlgorithmVisualiser">
+        <p>canvas that visualises the steps of the algorithm</p>
+    </canvas>
+
+    <section class="userInput"> 
+        <div class="stringInput">
+            <label for="stringField">Enter a string:</label>
+            <input type="text" id="stringField" class="stringField">
+        </div>  
+
+        <br>    
+
+        <div class="patternInput">
+            <label for="stringFieldPattern">Enter a pattern:</label>
+            <input type="text" id="stringFieldPattern" class="stringFieldPattern">
+        </div>
+        <br>
+        <input type="submit" id="stringSubmit" class="stringSubmit">
+
+    </section>
+   
 
 </body>
 
