@@ -14,8 +14,19 @@
 
 
 <body>
-    <h1>Chapter 1 algorithms</h1>
-    <hr>
+    <section class="menuBar">
+        <div class="menuSection">
+            <a href="../../main/index.html" class="menuLink"> <p>Home</p> </a>
+        </div>
+
+        <div class="menuSection">
+            <a href="../../menu/about/about.html" class="menuLink"> <p>About</p> </a>
+        </div>
+
+        <div class="menuSection">
+            <a href="../../menu/contact/contact.html" class="menuLink"> <p>Contact</p> </a>
+        </div>
+    </section>
 
 
     <div class="selector">
@@ -29,26 +40,32 @@
         </select>
     </div>
 
-    <canvas class="AlgorithmVisualiser">
-        <p>canvas that visualises the steps of the algorithm</p>
-    </canvas>
 
     <section class="userInput"> 
         <div class="stringInput">
             <label for="stringField">Enter a string:</label>
-            <input type="text" id="stringField" class="stringField">
+            <input type="text" id="stringField" class="stringField" maxlength="30">
         </div>  
 
         <br>    
 
         <div class="patternInput">
             <label for="stringFieldPattern">Enter a pattern:</label>
-            <input type="text" id="stringFieldPattern" class="stringFieldPattern">
+            <input type="text" id="stringFieldPattern" class="stringFieldPattern" maxlength="30">
         </div>
         <br>
         <input type="submit" id="stringSubmit" class="stringSubmit">
 
     </section>
+
+   
+    <canvas class="AlgorithmVisualiser" >
+        <p>canvas that visualises the steps of the algorithm</p>
+    </canvas>
+    
+    
+
+    
    
 
 </body>
