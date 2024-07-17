@@ -45,7 +45,7 @@ h1 {
     background-color: hsla(210, 62%, 26%, 0.446);
     padding: 1rem;
     min-height: 15vh;
-    width: 100%;
+    width: 100vw;
     text-align: center;
     gap: 1rem;
     position:static;
@@ -66,6 +66,7 @@ h1 {
 
 .comboContainer{
     height: 100vh;
+    width: 100vw;
     background-color: rgb(0, 51, 153);
     color: white;
 }
