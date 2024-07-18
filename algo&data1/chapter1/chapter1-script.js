@@ -15,11 +15,12 @@ const max_amount_chars = 20;
 const rectangle_min_dimensions = width/max_amount_chars; 
 
 
-window.addEventListener("resize", ()=>{
-    canvas.width = window.innerWidth - 10;
-    canvas.height = window.innerHeight/1.5;
-});
 
+
+
+function sleep(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+}
 
 
 
@@ -40,7 +41,7 @@ window.addEventListener("resize", ()=>{
 
 //beginning of the pattern matching algorithms from the course.
 //brute force
-function bruteForce(inputString, pattern){
+function VisualbruteForce(inputString, pattern, rectangleDimension){
     const n_t = inputString.length;
     const n_p = pattern.length;
 
@@ -52,6 +53,9 @@ function bruteForce(inputString, pattern){
             return false;   
         }
         else if(inputString[(i_t + i_p)] === pattern[i_p]){
+            drawFillRectWithInputString(inputString, rectangleDimension, rectangleDimension, (i_t + i_p), "green", "black");
+            drawFillRectWithPattern(pattern, rectangleDimension, rectangleDimension, i_p, "green", "black");
+            
             return inner_iter(i_t, (i_p + 1));
         }
         else{
@@ -66,39 +70,66 @@ function bruteForce(inputString, pattern){
 
 
 
-function drawRectWithInputString(string, rectDimension, textSize){
-    for(let i = 0; i < string.length; i++){
+function drawStrokeRectWithInputString(string, rectDimension, textSize, stringIndex, rectColor, textColor){
         //draws the rectangle
-        context.fillStyle = "rgb(0 0 0)";
-        context.strokeRect((rectDimension * i), 0, rectDimension, rectDimension);
+        context.fillStyle = rectColor;
+        context.strokeRect((rectDimension * stringIndex), 0, rectDimension, rectDimension);
 
         //draws the char in a rectangle
+        context.fillStyle = textColor;
         context.font = `${textSize}px arial`;
-        context.fillText(string[i], (rectDimension * i) + (rectDimension/10), rectDimension - ((1/5) * rectDimension));
-    }
+        context.fillText(string[stringIndex], (rectDimension * stringIndex) + (rectDimension/10), rectDimension - ((1/5) * rectDimension));   
 }
 
 
-function drawRectWithPattern(pattern, rectDimension, textSize){
-    for(let i = 0; i < pattern.length; i++){
-        //draws the rectangle
-        context.fillStyle = "rgb(0 0 0)";
-        context.strokeRect((rectDimension * i), rectDimension, rectDimension, rectDimension);
 
-        //draws the char in a rectangle
-        context.font = `${textSize}px arial`;
-        context.fillText(pattern[i], (rectDimension * i) + (rectDimension/10), 2*rectDimension - ((1/5) * rectDimension));
-    }
+function drawFillRectWithInputString(string, rectDimension, textSize, stringIndex, rectColor, textColor){
+    //draws the rectangle
+    context.fillStyle = rectColor;
+    context.fillRect((rectDimension * stringIndex), 0, rectDimension, rectDimension);
+
+    //draws the char in a rectangle
+    context.fillStyle = textColor;
+    context.font = `${textSize}px arial`;
+    context.fillText(string[stringIndex], (rectDimension * stringIndex) + (rectDimension/10), rectDimension - ((1/5) * rectDimension));   
 }
 
 
-function drawInput(string, pattern){
-    const dim = width/Math.max(string.length, pattern.length);
-    const rectangle_dimensions = dim < height/2 ? dim : dim/2;
-    const textSize = rectangle_dimensions;
+function drawStrokeRectWithPattern(pattern, rectDimension, textSize, stringIndex, rectClor, textColor){
+        //draws the rectangle
+        context.fillStyle = rectClor;
+        context.strokeRect((rectDimension * stringIndex), rectDimension, rectDimension, rectDimension);
+
+        //draws the char in a rectangle
+        context.fillStyle = textColor;
+        context.font = `${textSize}px arial`;
+        context.fillText(pattern[stringIndex], (rectDimension * stringIndex) + (rectDimension/10), 2*rectDimension - ((1/5) * rectDimension));
+}
+
+
+
+
+function drawFillRectWithPattern(pattern, rectDimension, textSize, stringIndex, rectColor, textColor){
+    //draws the rectangle
+    context.fillStyle = rectColor;
+    context.fillRect((rectDimension * stringIndex), rectDimension, rectDimension, rectDimension);
+
+    //draws the char in a rectangle
+    context.fillStyle = textColor;
+    context.font = `${textSize}px arial`;
+    context.fillText(pattern[stringIndex], (rectDimension * stringIndex) + (rectDimension/10), 2*rectDimension - ((1/5) * rectDimension));
+}
+
+
+function drawInput(string, pattern, rectangleDimension, textSize){
     
-    drawRectWithInputString(string, rectangle_dimensions, textSize);
-    drawRectWithPattern(pattern, rectangle_dimensions, textSize);
+    for(let i = 0; i < string.length; i++){
+        drawStrokeRectWithInputString(string, rectangleDimension, textSize, i, "black", "black");
+    }
+
+    for(let i = 0; i < pattern.length; i++){
+        drawStrokeRectWithPattern(pattern, rectangleDimension, textSize, i, "black", "black");
+    }
 
 }
 
@@ -113,28 +144,40 @@ const submitField = document.querySelector(".stringSubmit");
 
 
 
-function handleTextInput(){
+function handleTextInput(){ 
 
     //pop up dialogue window, looks bad but cool nonetheless
     //const name = prompt("What is your name?");
 
     const userString = stringInputField.value.toLowerCase();
     const userPattern = stringInputFieldPattern.value.toLowerCase();
+    const dim = width/Math.max(userString.length, userPattern.length);
+    const rectangle_dimensions = dim < height/2 ? dim : dim/2;
+    const textSize = rectangle_dimensions;
     /*
     const para = document.createElement("p");
     para.textContent = bruteForce(userString, userPattern);
     document.body.appendChild(para);
     */
 
-
-    drawInput(userString, userPattern);
+    drawInput(userString, userPattern, rectangle_dimensions, textSize);
+    console.log("ik kom hier");
+    VisualbruteForce(userString, userPattern, rectangle_dimensions);
+    
+    
     stringInputField.focus();
 }
+
+
 
 submitField.addEventListener("click", handleTextInput);
 
 
-
+window.addEventListener("resize", ()=>{
+    canvas.width = window.innerWidth - 10;
+    canvas.height = window.innerHeight/1.5;
+    handleTextInput();
+});
 
 
 
