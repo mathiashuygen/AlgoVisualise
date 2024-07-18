@@ -18,12 +18,9 @@ const rectangle_min_dimensions = width/max_amount_chars;
 
 
 
-function sleep(time) {
-    return new Promise(resolve => setTimeout(resolve, time));
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
-
-
-
 
 
 
@@ -45,7 +42,14 @@ function VisualbruteForce(inputString, pattern, rectangleDimension){
     const n_t = inputString.length;
     const n_p = pattern.length;
 
-    function inner_iter(i_t, i_p){
+    async function inner_iter(i_t, i_p){
+        
+        drawRectWithInputString(inputString, (i_t + i_p), 0, rectangleDimension, rectangleDimension, (i_t + i_p), "purple", "black", drawFillRect);
+
+        drawRectWithPattern(pattern, (i_t + i_p), rectangleDimension, rectangleDimension, rectangleDimension, i_p, "purple", "black", drawFillRect);
+        await sleep(1000); 
+
+
         if(i_p > (n_p - 1)){
             return i_t;
         }
@@ -53,86 +57,109 @@ function VisualbruteForce(inputString, pattern, rectangleDimension){
             return false;   
         }
         else if(inputString[(i_t + i_p)] === pattern[i_p]){
-            drawFillRectWithInputString(inputString, rectangleDimension, rectangleDimension, (i_t + i_p), "green", "black");
-            drawFillRectWithPattern(pattern, rectangleDimension, rectangleDimension, i_p, "green", "black");
-            
+            drawRectWithInputString(inputString, (i_t + i_p), 0, rectangleDimension, rectangleDimension, (i_t + i_p), "green", "black", drawFillRect);
+            drawRectWithPattern(pattern, (i_t + i_p), rectangleDimension, rectangleDimension, rectangleDimension, i_p, "green", "black", drawFillRect);
+            await sleep(1000);
             return inner_iter(i_t, (i_p + 1));
         }
         else{
-            return inner_iter((i_t + 1), 0);
+            //show that the pattern doesn't match for the moment. 
+            drawRectWithInputString(inputString, (i_t + i_p), 0, rectangleDimension, rectangleDimension, (i_t + i_p), "red", "black", drawFillRect);
+            drawRectWithPattern(pattern, (i_t + i_p), rectangleDimension, rectangleDimension, rectangleDimension, i_p, "red", "black", drawFillRect);
+            await sleep(1000);
+
+            //reset the colors and move the pattern one to the right. 
+            resetInputRectangle(inputString, rectangleDimension);
+            resetPatternRectangle(pattern, i_t, rectangleDimension);
+            drawInputString(inputString, rectangleDimension, rectangleDimension);
+            i_t = i_t + 1;
+            movePattern(i_t - 1, i_t, 1, rectangleDimension, pattern, pattern.length);
+            
+            return inner_iter(i_t, 0);
         }
     }
     return inner_iter(0, 0);
 }
 
 
+function drawFillRect(x, y, w, h){
+    context.fillRect(x, y, w, h);
+}
+
+function drawStokeRect(x, y, w, h){
+    context.strokeRect(x, y, w, h);
+}
 
 
 
 
-function drawStrokeRectWithInputString(string, rectDimension, textSize, stringIndex, rectColor, textColor){
+
+function drawRectWithInputString(string, x, y, rectDimension, textSize, stringIndex, rectColor, textColor, rectangleDrawFunc){
         //draws the rectangle
         context.fillStyle = rectColor;
-        context.strokeRect((rectDimension * stringIndex), 0, rectDimension, rectDimension);
+        rectangleDrawFunc((rectDimension * x), y, rectDimension, rectDimension);
 
         //draws the char in a rectangle
         context.fillStyle = textColor;
         context.font = `${textSize}px arial`;
-        context.fillText(string[stringIndex], (rectDimension * stringIndex) + (rectDimension/10), rectDimension - ((1/5) * rectDimension));   
+        context.fillText(string[stringIndex], (rectDimension * x) + (rectDimension/10), rectDimension - ((1/5) * rectDimension));   
 }
 
 
 
-function drawFillRectWithInputString(string, rectDimension, textSize, stringIndex, rectColor, textColor){
-    //draws the rectangle
-    context.fillStyle = rectColor;
-    context.fillRect((rectDimension * stringIndex), 0, rectDimension, rectDimension);
-
-    //draws the char in a rectangle
-    context.fillStyle = textColor;
-    context.font = `${textSize}px arial`;
-    context.fillText(string[stringIndex], (rectDimension * stringIndex) + (rectDimension/10), rectDimension - ((1/5) * rectDimension));   
-}
-
-
-function drawStrokeRectWithPattern(pattern, rectDimension, textSize, stringIndex, rectClor, textColor){
+function drawRectWithPattern(pattern, x, y, rectDimension, textSize, stringIndex, rectClor, textColor, rectangleDrawFunc){
         //draws the rectangle
         context.fillStyle = rectClor;
-        context.strokeRect((rectDimension * stringIndex), rectDimension, rectDimension, rectDimension);
+        rectangleDrawFunc((rectDimension * x), y, rectDimension, rectDimension);
 
         //draws the char in a rectangle
         context.fillStyle = textColor;
         context.font = `${textSize}px arial`;
-        context.fillText(pattern[stringIndex], (rectDimension * stringIndex) + (rectDimension/10), 2*rectDimension - ((1/5) * rectDimension));
+        context.fillText(pattern[stringIndex], (rectDimension * x) + (rectDimension/10), 2*rectDimension - ((1/5) * rectDimension));
 }
 
 
 
 
-function drawFillRectWithPattern(pattern, rectDimension, textSize, stringIndex, rectColor, textColor){
-    //draws the rectangle
-    context.fillStyle = rectColor;
-    context.fillRect((rectDimension * stringIndex), rectDimension, rectDimension, rectDimension);
-
-    //draws the char in a rectangle
-    context.fillStyle = textColor;
-    context.font = `${textSize}px arial`;
-    context.fillText(pattern[stringIndex], (rectDimension * stringIndex) + (rectDimension/10), 2*rectDimension - ((1/5) * rectDimension));
-}
 
 
-function drawInput(string, pattern, rectangleDimension, textSize){
-    
+function drawInputString(string, rectangleDimension, textSize){
     for(let i = 0; i < string.length; i++){
-        drawStrokeRectWithInputString(string, rectangleDimension, textSize, i, "black", "black");
+        drawRectWithInputString(string, i, 0, rectangleDimension, textSize, i, "black", "black", drawStokeRect);
     }
-
-    for(let i = 0; i < pattern.length; i++){
-        drawStrokeRectWithPattern(pattern, rectangleDimension, textSize, i, "black", "black");
-    }
-
 }
 
+function drawPattern(pattern, startingPoint, rectangleDimension, textSize){
+    let indexInString = 0;
+    for(let i = startingPoint; indexInString < pattern.length; i++){
+        drawRectWithPattern(pattern, i, rectangleDimension, rectangleDimension, textSize, indexInString, "black", "black", drawStokeRect);
+        indexInString += 1;
+    }
+}
+
+
+function resetInputRectangle(string, rectangleDimension){
+    for(let i = 0; i < string.length; i++){
+        context.clearRect(rectangleDimension * i, 0, rectangleDimension, rectangleDimension);
+    }
+}
+
+function resetPatternRectangle(pattern, startingPoint, rectangleDimension){
+    let indexInString = 0;
+    for(let i = startingPoint; indexInString < pattern.length; i++){
+        context.clearRect(rectangleDimension * i, rectangleDimension, rectangleDimension, rectangleDimension);
+        indexInString += 1;
+
+    }
+}
+
+
+
+function movePattern(previousStartingPoint, newStartingPoint, moveAmount, rectangleDimension, pattern, patternLength){
+    resetPatternRectangle(pattern, previousStartingPoint, rectangleDimension);
+    drawPattern(pattern, newStartingPoint, rectangleDimension, rectangleDimension);
+    
+}
 
 
 
@@ -160,7 +187,8 @@ function handleTextInput(){
     document.body.appendChild(para);
     */
 
-    drawInput(userString, userPattern, rectangle_dimensions, textSize);
+    drawInputString(userString, rectangle_dimensions, rectangle_dimensions);
+    drawPattern(userPattern, 0, rectangle_dimensions, rectangle_dimensions);
     console.log("ik kom hier");
     VisualbruteForce(userString, userPattern, rectangle_dimensions);
     
