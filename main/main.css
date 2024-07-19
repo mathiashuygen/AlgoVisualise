@@ -1,8 +1,16 @@
 * {
+
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+
+
+body{
+    min-height: 100vh;
+    background-color: rgb(0, 51, 153);
+}
+
 
 img{
     display: block;
@@ -13,12 +21,12 @@ h1 {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     color:white;
     text-shadow: 5px 5px 5px #000;
+    margin-bottom: 2rem;
     
 }
 
-.nowrap{
-    white-space: nowrap;
-}
+
+
 
 
 .welcomeWord {
@@ -39,63 +47,20 @@ h1 {
 
 
 .introContainer {
-    background-color: hsla(210, 62%, 26%, 0.446);
-    padding: 1rem;
-    min-height: 15vh;
+    width: 100%;
+    background-color: hsla(207, 4%, 60%, 0.629);
     text-align: center;
     gap: 1rem;
-    position:static;
     
 
 }
 
 
 
-.container {
-    padding: 1rem;
-    margin-top: 10rem;
-    position: relative;
-}
-
-
-
-
-.comboContainer{
-    height: 100vh;
-    width: 100%;
-    background-color: rgb(0, 51, 153);
-    color: white;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.wrappingContainer{
-    background-image: url(../images/graph1.png), linear-gradient(rgb(143, 143, 255), white, rgb(89, 78, 79));
-    background-repeat: repeat;
-    background-position: top center;
-
-}
-
-
-
-
 
 .menuBar {
+    overflow: hidden;
     background-color: black;
-    height: 2.5rem;
     display: flex;
     justify-content: center;
     gap: 1rem;
@@ -118,6 +83,48 @@ h1 {
 .menuLink{
     text-decoration: none;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.container {
+    padding: 1rem;
+    margin-top: 10rem;
+    position: relative;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -191,7 +198,7 @@ h1 {
     position: absolute;
     opacity: 0;
     transition: 0.25s;
-    font-size: 300%;
+    font-size: 200%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);

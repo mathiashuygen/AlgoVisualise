@@ -1,100 +1,137 @@
 <!DOCTYPE html>
 <html lang="'en">
+  <!--the following link can be used to look up more information about html: https://developer.mozilla.org/en-US/docs/Web/HTML-->
+  <!--the following page can be used to validate an html file: https://validator.w3.org-->
 
-<!--the following link can be used to look up more information about html: https://developer.mozilla.org/en-US/docs/Web/HTML-->
-<!--the following page can be used to validate an html file: https://validator.w3.org-->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Mathias Huygen" />
+    <meta
+      name="description"
+      content="This website helps students to visualise algorithms seen in their algorithms course"
+    />
+    <title>Algo Visualiser</title>
 
+    <link rel="icon" href="../images/courseIcon.jpeg" type="image/x-icon" />
 
-
-    <head>
-        <meta charset="UTF-8">
-        <meta name="author" content="Mathias Huygen">
-        <meta name="description" content="This website helps students to visualise algorithms seen in their algorithms course">
-        <title>Algo Visualiser</title>
-
-        <link rel="icon" href="../images/courseIcon.jpeg" type="image/x-icon">
-
-        <!--this is a link to a css stylesheet-->
-        <link rel="stylesheet" href="main.css" type="text/css">
-    </head>
-
-
+    <!--this is a link to a css stylesheet-->
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
 
 
-    <body>
-        <div class="wrappingContainer">
-            <header class="introContainer">
-            <!--h1 is the biggest header, only one per page should be used-->
-            
-           
-                <h1><spn class="nowrap"> Algo and Datastructures</spn> 
-                    <span class="nowrap">visualiser</span>
-                 </h1>
-            </header>
+
+
+
+
+
+
+  <body>
+
+    
+    <header class="introContainer">
+      <!--h1 is the biggest header, only one per page should be used-->
+      <h1>
+        <spn class="nowrap"> Algo and Datastructures</spn>
+        <span class="nowrap">visualiser</span>
+      </h1>
+
+      <section class="menuBar">
+        <div class="menuSection">
+          <a href="../main/index.html" class="menuLink"> <p>Home</p> </a>
         </div>
-        
-        <div class="comboContainer">
 
-            <section class="menuBar">
-                <div class="menuSection">
-                    <a href="../main/index.html" class="menuLink"> <p>Home</p> </a>
-                </div>
-
-                <div class="menuSection">
-                    <a href="../menu/about/about.html" class="menuLink"> <p>About</p> </a>
-                </div>
-
-                <div class="menuSection">
-                    <a href="../menu/contact/contact.html" class="menuLink"> <p>Contact</p> </a>
-                </div>
-            </section>
-
-
-            <main class="container">
-                <p class="welcomeWord">choose your aglorithms course</p>
-                
-
-                    <div class="imageContainer">
-
-                        <figure class="imageBox image1"> 
-                            <a href="../algo&data1/algo&data1.html">
-                                <img src="../images/algo1_intro_image.jpg" alt="algo 1 course image" width="200" height="200" class="image">
-                                <figcaption class="algoChooser"><div class="dummy">algo and data 1</div></figcaption>
-                            </a>
-                            
-                        
-                        </figure>
-
-                        <figure class="imageBox image2">
-                            <a href="../algo&data2/algo&data2.html">
-                                <img src="../images/algo2_intro_image.jpg" alt="algo 2 course image" width="441" height="280" class="image">
-                                <figcaption class="algoChooser"><div class="dummy">algo and data 2</div></figcaption>
-                            </a>
-                        
-                        </figure>
-
-                        <figure class="imageBox image3">
-                            <a href="../algo&data3/algo&data3.html">
-                                <img src="../images/algo3_intro_image.jpg" alt="algo 3 course image" class="image">
-                                <figcaption class="algoChooser"><div class="dummy">algo and data 3</div></figcaption>
-                            </a>
-                            
-                            
-                        </figure>
-                    </div>
-
-                    
-                    
-                    
-            
-                
-            </main>
-            
-            <footer class="container">
-                
-            </footer>
+        <div class="menuSection">
+          <a href="../menu/about/about.html" class="menuLink"> <p>About</p> </a>
         </div>
-        
-    </body>
 
+        <div class="menuSection">
+          <a href="../menu/contact/contact.html" class="menuLink">
+            <p>Contact</p>
+          </a>
+        </div>
+      </section>
+
+    </header>
+
+
+
+
+
+    <main class="container">
+
+
+      <p class="welcomeWord">choose your aglorithms course</p>
+
+      <div class="imageContainer">
+
+        <figure class="imageBox image1">
+          <a href="../algo&data1/algo&data1.html">
+            <img
+              src="../images/algo1_intro_image.jpg"
+              alt="algo 1 course image"
+              width="200"
+              height="200"
+              class="image"
+            />
+            <figcaption class="algoChooser">
+              <div class="dummy">algo and data 1</div>
+            </figcaption>
+          </a>
+        </figure>
+
+
+
+
+        <figure class="imageBox image2">
+          <a href="../algo&data2/algo&data2.html">
+            <img
+              src="../images/algo2_intro_image.jpg"
+              alt="algo 2 course image"
+              width="441"
+              height="280"
+              class="image"
+            />
+            <figcaption class="algoChooser">
+              <div class="dummy">algo and data 2</div>
+            </figcaption>
+          </a>
+        </figure>
+
+
+
+
+
+        <figure class="imageBox image3">
+          <a href="../algo&data3/algo&data3.html">
+            <img
+              src="../images/algo3_intro_image.jpg"
+              alt="algo 3 course image"
+              class="image"
+            />
+            <figcaption class="algoChooser">
+              <div class="dummy">algo and data 3</div>
+            </figcaption>
+          </a>
+        </figure>
+      </div>
+
+
+
+    </main>
+
+
+
+
+
+
+
+    <footer class="container">
+
+    </footer>
+
+
+
+
+
+  </body>
 </html>

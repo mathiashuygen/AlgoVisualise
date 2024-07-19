@@ -11,13 +11,29 @@ import { slider, sliderVal, changeSliderValue } from "./buttons.js";
 const defaultFunctionExecutionSpeed = 1000;
 var functionExecutionSpeedFactor = slider.value;
 
+
+
+
+
+
 export var functionRunning = false;
+
+
+
+
 
 
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+
+
+
+
+
+
 
 function outputSliderValue(){
     const sliderValue = slider.value;
@@ -30,6 +46,23 @@ slider.addEventListener("input", outputSliderValue)
 
 
 
+
+
+
+
+
+function drawStringAndPatternRetcs(inputString, pattern, stringX, stringY, patternX, patternY, indexInString, indexInPattern, rectDim, rectColor, textColor){
+    drawRectWithInputString(inputString, stringX, stringY, rectDim, rectDim, indexInString, rectColor, textColor, drawFillRect);
+    drawRectWithPattern(pattern, patternX, patternY, rectDim, rectDim, indexInPattern, rectColor, textColor, drawFillRect);
+}
+
+
+
+function resetStringAndPattern(inputString, pattern, patternX, rectDim){
+    resetInputRectangle(inputString, rectDim);
+    resetPatternRectangle(pattern, patternX, rectDim);
+    drawInputString(inputString, rectDim, rectDim);
+}
 
 
 
@@ -52,9 +85,9 @@ export function VisualbruteForce(inputString, pattern, rectangleDimension){
 
     async function inner_iter(i_t, i_p){
         
-        drawRectWithInputString(inputString, (i_t + i_p), 0, rectangleDimension, rectangleDimension, (i_t + i_p), "grey", "black", drawFillRect);
-        drawRectWithPattern(pattern, (i_t + i_p), rectangleDimension, rectangleDimension, rectangleDimension, i_p, "grey", "black", drawFillRect);
-        await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor); 
+        
+        drawStringAndPatternRetcs(inputString, pattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "grey", "black");
+        await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
 
 
         if(i_p > (n_p - 1)){
@@ -66,21 +99,20 @@ export function VisualbruteForce(inputString, pattern, rectangleDimension){
             return false;   
         }
         else if(inputString[(i_t + i_p)] === pattern[i_p]){
-            drawRectWithInputString(inputString, (i_t + i_p), 0, rectangleDimension, rectangleDimension, (i_t + i_p), "green", "black", drawFillRect);
-            drawRectWithPattern(pattern, (i_t + i_p), rectangleDimension, rectangleDimension, rectangleDimension, i_p, "green", "black", drawFillRect);
+            drawStringAndPatternRetcs(inputString, pattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "green", "black");
             await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
+
             return inner_iter(i_t, (i_p + 1));
         }
         else{
             //show that the pattern doesn't match for the moment. 
-            drawRectWithInputString(inputString, (i_t + i_p), 0, rectangleDimension, rectangleDimension, (i_t + i_p), "red", "black", drawFillRect);
-            drawRectWithPattern(pattern, (i_t + i_p), rectangleDimension, rectangleDimension, rectangleDimension, i_p, "red", "black", drawFillRect);
+            
+            
+            drawStringAndPatternRetcs(inputString, pattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "red", "black");
             await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
 
             //reset the colors and move the pattern one to the right. 
-            resetInputRectangle(inputString, rectangleDimension);
-            resetPatternRectangle(pattern, i_t, rectangleDimension);
-            drawInputString(inputString, rectangleDimension, rectangleDimension);
+            resetStringAndPattern(inputString, pattern, i_t, rectangleDimension);
             i_t = i_t + 1;
             movePattern(i_t - 1, i_t, rectangleDimension, pattern, pattern.length);
             
@@ -158,6 +190,8 @@ function computeShiftTable(pattern){
 
 
 
+
+
 export function VisualQucikSearch(inputString, userPattern, rectangleDimension){
     functionRunning = true;
     const n_t = inputString.length;
@@ -165,8 +199,7 @@ export function VisualQucikSearch(inputString, userPattern, rectangleDimension){
     let shift = computeShiftTable(userPattern);
 
     async function inner_iter(i_t, i_p){
-        drawRectWithInputString(inputString, (i_t + i_p), 0, rectangleDimension, rectangleDimension, (i_t + i_p), "grey", "black", drawFillRect);
-        drawRectWithPattern(userPattern, (i_t + i_p), rectangleDimension, rectangleDimension, rectangleDimension, i_p, "grey", "black", drawFillRect);
+        drawStringAndPatternRetcs(inputString, userPattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "grey", "black");
         await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
 
         if(i_p > (n_p - 1)){
@@ -178,15 +211,13 @@ export function VisualQucikSearch(inputString, userPattern, rectangleDimension){
             return false;
         }
         else if(inputString[i_t + i_p] === userPattern[i_p]){
-            drawRectWithInputString(inputString, (i_t + i_p), 0, rectangleDimension, rectangleDimension, (i_t + i_p), "green", "black", drawFillRect);
-            drawRectWithPattern(userPattern, (i_t + i_p), rectangleDimension, rectangleDimension, rectangleDimension, i_p, "green", "black", drawFillRect);
+            drawStringAndPatternRetcs(inputString, userPattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "green", "black");
             await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
             
             return inner_iter(i_t, (i_p + 1));
         }
         else{
-            drawRectWithInputString(inputString, (i_t + i_p), 0, rectangleDimension, rectangleDimension, (i_t + i_p), "red", "black", drawFillRect);
-            drawRectWithPattern(userPattern, (i_t + i_p), rectangleDimension, rectangleDimension, rectangleDimension, i_p, "red", "black", drawFillRect);
+            drawStringAndPatternRetcs(inputString, userPattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "red", "black");
             await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
             
 
@@ -196,18 +227,17 @@ export function VisualQucikSearch(inputString, userPattern, rectangleDimension){
             i_t = i_t + shiftAmount
 
             if(!(shiftAmount > n_p)){
-                drawRectWithInputString(inputString, ((i_t - shiftAmount) + n_p) % n_t, 0, rectangleDimension, rectangleDimension, ((i_t - shiftAmount) + n_p), "purple", "black", drawFillRect);
-                drawRectWithPattern(userPattern, (i_t - shiftAmount) + (n_p - 1) - (shiftAmount - 1), rectangleDimension, rectangleDimension, rectangleDimension, (n_p - 1) - (shiftAmount - 1), "purple", "black", drawFillRect);
+                drawStringAndPatternRetcs(inputString, userPattern, ((i_t - shiftAmount) + n_p) % n_t, 0,  (i_t - shiftAmount) + (n_p - 1) - (shiftAmount - 1), rectangleDimension,  ((i_t - shiftAmount) + n_p), (n_p - 1) - (shiftAmount - 1), rectangleDimension, "purple", "black");
+                await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
             }
             else{
                 drawRectWithInputString(inputString, ((i_t - shiftAmount) + n_p) % n_t, 0, rectangleDimension, rectangleDimension, ((i_t - shiftAmount) + n_p), "orange", "black", drawFillRect);
+                await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
             }
-            await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
+            
 
             //reset the colors and move the pattern one to the right. 
-            resetInputRectangle(inputString, rectangleDimension);
-            resetPatternRectangle(userPattern, i_t, rectangleDimension);
-            drawInputString(inputString, rectangleDimension, rectangleDimension);
+            resetStringAndPattern(inputString, userPattern, i_t, rectangleDimension);
             movePattern(i_t - shiftAmount, i_t, rectangleDimension, userPattern, n_p);
 
             return inner_iter(i_t, 0);
