@@ -86,8 +86,7 @@ export function VisualbruteForce(inputString, pattern, rectangleDimension){
     async function inner_iter(i_t, i_p){
         
         
-        drawStringAndPatternRetcs(inputString, pattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "grey", "black");
-        await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
+        
 
 
         if(i_p > (n_p - 1)){
@@ -99,6 +98,8 @@ export function VisualbruteForce(inputString, pattern, rectangleDimension){
             return false;   
         }
         else if(inputString[(i_t + i_p)] === pattern[i_p]){
+            drawStringAndPatternRetcs(inputString, pattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "grey", "black");
+            await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
             drawStringAndPatternRetcs(inputString, pattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "green", "black");
             await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
 
@@ -106,7 +107,8 @@ export function VisualbruteForce(inputString, pattern, rectangleDimension){
         }
         else{
             //show that the pattern doesn't match for the moment. 
-            
+            drawStringAndPatternRetcs(inputString, pattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "grey", "black");
+            await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
             
             drawStringAndPatternRetcs(inputString, pattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "red", "black");
             await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
@@ -199,8 +201,7 @@ export function VisualQucikSearch(inputString, userPattern, rectangleDimension){
     let shift = computeShiftTable(userPattern);
 
     async function inner_iter(i_t, i_p){
-        drawStringAndPatternRetcs(inputString, userPattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "grey", "black");
-        await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
+        
 
         if(i_p > (n_p - 1)){
             functionRunning = false;
@@ -211,12 +212,16 @@ export function VisualQucikSearch(inputString, userPattern, rectangleDimension){
             return false;
         }
         else if(inputString[i_t + i_p] === userPattern[i_p]){
+            drawStringAndPatternRetcs(inputString, userPattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "grey", "black");
+            await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
             drawStringAndPatternRetcs(inputString, userPattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "green", "black");
             await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
             
             return inner_iter(i_t, (i_p + 1));
         }
         else{
+            drawStringAndPatternRetcs(inputString, userPattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "grey", "black");
+            await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
             drawStringAndPatternRetcs(inputString, userPattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "red", "black");
             await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
             
