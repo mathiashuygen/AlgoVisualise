@@ -1,13 +1,13 @@
 
 import { drawRectWithInputString, drawRectWithPattern, drawFillRect, drawInputString, resetInputRectangle, resetPatternRectangle, movePattern} from "./drawLogic.js";
-import { slider, sliderVal, changeSliderValue } from "./buttons.js";
+import { slider, changeSliderValue} from "./buttons.js";
 
 
 
 
 
 
-
+//the default wait time is 1000ms = 1s. 
 const defaultFunctionExecutionSpeed = 1000;
 var functionExecutionSpeedFactor = slider.value;
 
@@ -15,7 +15,8 @@ var functionExecutionSpeedFactor = slider.value;
 
 
 
-
+//I do not allow resets while an algorithm is running. This is because I do not know yet how to stop a function from running in the middle of it's execution.
+//To only allow resets while no algorithm is running I use this variable to show when some algorithm is running in the background. 
 export var functionRunning = false;
 
 
@@ -23,7 +24,7 @@ export var functionRunning = false;
 
 
 
-
+//promise that allows me to sleep for a certain amount of ms in async functions. 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -34,14 +35,16 @@ function sleep(ms) {
 
 
 
-
-function outputSliderValue(){
+//function that gets called whenever a user uses the slider. This changes the execution speed of an algorithm. I do this by dividing the default wait time by the value of the slider. The bigger the value the
+//faster the algorithm runs. 
+function UpdateExecutionSpeed(){
     const sliderValue = slider.value;
-    sliderVal.textContent = `x${sliderValue}`;
+    changeSliderValue(`x${sliderValue}`);
     functionExecutionSpeedFactor = slider.value;
 }
 
-slider.addEventListener("input", outputSliderValue)
+//event listener to listen to the user manipulating the slider. 
+slider.addEventListener("input", UpdateExecutionSpeed)
 
 
 
@@ -50,19 +53,27 @@ slider.addEventListener("input", outputSliderValue)
 
 
 
-
+//I created this function to replace two liners by a one liners. It's just to clean up the code. This functions draws rectangle for the input string and pattern at given indeces.
+//the color of this rectangle can be whatever I want and it is used to show the user where in the pattern and string the algorithm is. It is also used to depict if two characters
+//match. If they match I draw a green rectangle, if they don't I draw a red one. This can be seen in the three algorithms below. 
 function drawStringAndPatternRetcs(inputString, pattern, stringX, stringY, patternX, patternY, indexInString, indexInPattern, rectDim, rectColor, textColor){
     drawRectWithInputString(inputString, stringX, stringY, rectDim, rectDim, indexInString, rectColor, textColor, drawFillRect);
     drawRectWithPattern(pattern, patternX, patternY, rectDim, rectDim, indexInPattern, rectColor, textColor, drawFillRect);
 }
 
 
-
+//same reason for existing as above. This resets the canvas and redraws everyting such that the colors and previous pattern aren't visible anymore. The pattern moves to the right after most iterations. 
+//Because of this I have to delete the pattern at each iteration and redraw it at a new location. I also do not want colours from previous iterations to still be on the screen, so I use this function
+//to delete everything that I don't want on the screen anymore. After it is done it redraws the input string. The pattern is moved by another function. 
 function resetStringAndPattern(inputString, pattern, patternX, rectDim){
     resetInputRectangle(inputString, rectDim);
     resetPatternRectangle(pattern, patternX, rectDim);
     drawInputString(inputString, rectDim, rectDim);
 }
+
+
+
+
 
 
 
@@ -84,29 +95,35 @@ export function VisualbruteForce(inputString, pattern, rectangleDimension){
     const n_p = pattern.length;
 
     async function inner_iter(i_t, i_p){
-        
-        
-        
 
-
+        //pattern matches somewhere in the string. Return the index of the first character matching. 
         if(i_p > (n_p - 1)){
             functionRunning = false;
             return i_t;
         }
+
+        //The pattern is not present in the string. Return false. 
         else if(i_t > (n_t - n_p)){
             functionRunning = false; 
             return false;   
         }
+
+        //the characters of where we are in the string and where we are in the pattern match. Draw green rectangles to visualise this and go to the next pair of characters.  
         else if(inputString[(i_t + i_p)] === pattern[i_p]){
+
+            //lil comment. I use grey squares to indicate which two symbols are being compares. 
             drawStringAndPatternRetcs(inputString, pattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "grey", "black");
             await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
+
             drawStringAndPatternRetcs(inputString, pattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "green", "black");
             await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
 
             return inner_iter(i_t, (i_p + 1));
         }
+
+        //The two characters do not match. Draw red rectangles to visualise this, move the pattern and move on to the next pair of characters. 
         else{
-            //show that the pattern doesn't match for the moment. 
+            
             drawStringAndPatternRetcs(inputString, pattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "grey", "black");
             await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
             
@@ -138,11 +155,12 @@ export function VisualbruteForce(inputString, pattern, rectangleDimension){
 
 
 //QuickSearch
+
+
 //Quicksearch has two parts. First it needs a function that returns a lambda that can be used in the match function. The second part is the match function itself.
 
 
-//shift table
-
+//shift table. Gives back a lambda that returns the amount of positions the pattern can move to the right. 
 function computeShiftTable(pattern){
     var n_p = pattern.length;
     var min_ascii = pattern.charCodeAt(0);
@@ -193,7 +211,7 @@ function computeShiftTable(pattern){
 
 
 
-
+//match fucntion
 export function VisualQucikSearch(inputString, userPattern, rectangleDimension){
     functionRunning = true;
     const n_t = inputString.length;
@@ -201,36 +219,50 @@ export function VisualQucikSearch(inputString, userPattern, rectangleDimension){
     let shift = computeShiftTable(userPattern);
 
     async function inner_iter(i_t, i_p){
-        
 
+        //pattern matches somewhere in the string. Return the index of the first character matching. 
         if(i_p > (n_p - 1)){
             functionRunning = false;
             return i_t;
         }
+
+        //The pattern is not present in the string. Return false. 
         else if(i_t > (n_t - n_p)){
             functionRunning = false;
             return false;
         }
+
+        //the characters of where we are in the string and where we are in the pattern match. Draw green rectangles to visualise this and go to the next pair of characters. 
         else if(inputString[i_t + i_p] === userPattern[i_p]){
             drawStringAndPatternRetcs(inputString, userPattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "grey", "black");
             await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
+
             drawStringAndPatternRetcs(inputString, userPattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "green", "black");
             await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
             
             return inner_iter(i_t, (i_p + 1));
         }
+
+         //the characters of where we are in the string and where we are in the pattern don't match. Draw red rectangles to visualise this, compute how many positions the pattern can shift to the right, 
+         //move the pattern and go into the next iteration.  
         else{
             drawStringAndPatternRetcs(inputString, userPattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "grey", "black");
             await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
+
             drawStringAndPatternRetcs(inputString, userPattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "red", "black");
             await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
             
 
-
+            //calc shift amount
             let c_t = inputString[(i_t + n_p) % n_t];
             let shiftAmount = shift(c_t);
             i_t = i_t + shiftAmount
 
+
+            //the shifting can be done in two ways:
+            //  1: c_t matches with a character in the pattern => allign them.
+            //  2: c_t doesn't macth with a character in the pattern => shift the pattern to one index higher than c_t;
+            //based on this, I colour c_t with a different colour. If 1 holds, the rectangle becomes purple, if 2 hold, it becomes orange. 
             if(!(shiftAmount > n_p)){
                 drawStringAndPatternRetcs(inputString, userPattern, ((i_t - shiftAmount) + n_p) % n_t, 0,  (i_t - shiftAmount) + (n_p - 1) - (shiftAmount - 1), rectangleDimension,  ((i_t - shiftAmount) + n_p), (n_p - 1) - (shiftAmount - 1), rectangleDimension, "purple", "black");
                 await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);

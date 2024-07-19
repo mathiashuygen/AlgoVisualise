@@ -1,3 +1,8 @@
+
+
+/*
+collection of all the buttons and fields present on this page. T
+*/
 export const algorithmPicker = document.querySelector(".algorithmPicker");
 export const stringInputField = document.querySelector(".stringField");
 export const stringInputFieldPattern = document.querySelector(".stringFieldPattern");

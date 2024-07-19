@@ -1,9 +1,9 @@
 
 
 //init for canvas. Used to draw.
-import { canvas, context, width, height, drawFillRect, drawStokeRect, drawRectWithInputString, drawRectWithPattern, drawInputString, drawPattern, resetInputRectangle, resetPatternRectangle, movePattern} from "./drawLogic.js";
+import { canvas, context, width, height, drawInputString, drawPattern} from "./drawLogic.js";
 import { VisualbruteForce, VisualQucikSearch, functionRunning} from "./visualAlgorithms.js";
-import { algorithmPicker, stringInputField, stringInputFieldPattern, submitField, resetButton, slider, sliderVal} from "./buttons.js";
+import { algorithmPicker, stringInputField, stringInputFieldPattern, submitField, resetButton} from "./buttons.js";
 
 
 
