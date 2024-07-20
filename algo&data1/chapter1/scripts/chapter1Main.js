@@ -1,9 +1,9 @@
 
 
 //init for canvas. Used to draw.
-import { canvas, context, width, height, drawInputString, drawPattern} from "./drawLogic.js";
-import { VisualbruteForce, VisualQucikSearch, functionRunning} from "./visualAlgorithms.js";
-import { algorithmPicker, stringInputField, stringInputFieldPattern, submitField, resetButton} from "./buttons.js";
+import { canvas, context, width, height, drawInputString, drawPattern } from "./drawLogic.js";
+import { VisualbruteForce, VisualQucikSearch } from "./visualAlgorithms.js";
+import { algorithmPicker, stringInputField, stringInputFieldPattern, submitField } from "./buttons.js";
 
 
 
@@ -41,11 +41,10 @@ function handleTextInput(){
 
 
 
-function resetCanvas(){
-    if(!functionRunning){
-    context.clearRect(0, 0, width, height);
-    }
-}
+
+
+
+
 
 
 
@@ -54,17 +53,17 @@ function resetCanvas(){
 
 submitField.addEventListener("click", handleTextInput);
 
-resetButton.addEventListener("click", resetCanvas)
 
 
 
+/*
 
 window.addEventListener("resize", ()=>{
     canvas.width = window.innerWidth - 10;
     canvas.height = window.innerHeight/1.5;
     handleTextInput();
 });
-
+*/
 
 
 

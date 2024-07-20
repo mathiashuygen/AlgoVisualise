@@ -37,6 +37,12 @@ input[type=submit]{
     margin-left: 2rem;
 }
 
+.pauseButton{
+    font-size: 120%;
+    width: 5rem;
+    margin-left: 2rem;
+}
+
 
 .algorithmPicker{
     font-size: 100%;

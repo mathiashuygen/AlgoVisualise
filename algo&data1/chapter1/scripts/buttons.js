@@ -10,6 +10,7 @@ export const submitField = document.querySelector(".stringSubmit");
 export const resetButton = document.querySelector(".resetButton");
 export const slider = document.querySelector(".slider");
 export const sliderVal = document.querySelector(".valueVisual");
+export const pauseButton = document.querySelector(".pauseButton");
 
 export function changeSliderValue(newVal){
     sliderVal.textContent = newVal;

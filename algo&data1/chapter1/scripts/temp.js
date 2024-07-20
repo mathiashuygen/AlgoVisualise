@@ -1,6 +1,6 @@
 
-import { context, width,  height, drawRectWithInputString, drawRectWithPattern, drawFillRect, drawInputString, resetInputRectangle, resetPatternRectangle, movePattern } from "./drawLogic.js";
-import { resetButton, slider, changeSliderValue, pauseButton } from "./buttons.js";
+import { drawRectWithInputString, drawRectWithPattern, drawFillRect, drawInputString, resetInputRectangle, resetPatternRectangle, movePattern } from "./drawLogic.js";
+import { slider, changeSliderValue, pauseButton } from "./buttons.js";
 
 
 
@@ -18,7 +18,7 @@ var paused = false;
 
 //I do not allow resets while an algorithm is running. This is because I do not know yet how to stop a function from running in the middle of it's execution.
 //To only allow resets while no algorithm is running I use this variable to show when some algorithm is running in the background. 
-
+export var functionRunning = false;
 
 
 
@@ -51,35 +51,24 @@ slider.addEventListener("input", UpdateExecutionSpeed)
 
 
 
-
-function updatePauseButton() {
-
-    if (paused) {
+/*
+function updatePauseButton(){
+   
+    if(paused){
         paused = false;
-        pauseButton.textContent = "||";
-
+        pauseButton.textContent = "resume";
+    
 
     }
-    else {
+    else{
         paused = true;
-        pauseButton.textContent = "▷";
+        pauseButton.textContent = "pause";
     }
 }
 
 pauseButton.addEventListener("click", updatePauseButton);
+*/
 
-
-
-
-var reset = false; 
-
-//resets the canvas. 
-function resetCanvas(){
-    reset = true; 
-}
-
-
-resetButton.addEventListener("click", resetCanvas)
 
 
 
@@ -111,89 +100,91 @@ function resetStringAndPattern(inputString, pattern, patternX, rectDim) {
 
 
 
-export async function VisualbruteForce(inputString, pattern, rectangleDimension) {
+export function VisualbruteForce(inputString, pattern, rectangleDimension) {
 
+    functionRunning = true;
     const n_t = inputString.length;
     const n_p = pattern.length;
 
     var previous_i_t = 0;
     var previous_i_p = 0;
-    var outputArray = [];
+    var iterReturnArray;
 
-    async function inner_iter(inputString, pattern, i_t, i_p, n_t, n_p, rectangleDimension) {
-
-        
-        //pattern matches somewhere in the string. Return the index of the first character matching. 
-        if (i_p > (n_p - 1)) {
-            outputArray.push(i_t);
-            return 0;
-        }
-
-        //The pattern is not present in the string. Return false. 
-        else if (i_t > (n_t - n_p)) {
-            outputArray.push(false);
-            return 0;
-        }
-
-        //the characters of where we are in the string and where we are in the pattern match. Draw green rectangles to visualise this and go to the next pair of characters.  
-        else if (inputString[(i_t + i_p)] === pattern[i_p]) {
-
-            //lil comment. I use grey squares to indicate which two symbols are being compares. 
-            drawStringAndPatternRetcs(inputString, pattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "grey", "black");
-            await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
-
-            drawStringAndPatternRetcs(inputString, pattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "green", "black");
-            await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
-
-            outputArray.push(i_t, (i_p + 1))
-            return 0;
-        }
-
-        //The two characters do not match. Draw red rectangles to visualise this, move the pattern and move on to the next pair of characters. 
-        else {
-
-            drawStringAndPatternRetcs(inputString, pattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "grey", "black");
-            await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
-
-            drawStringAndPatternRetcs(inputString, pattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "red", "black");
-            await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
-
-            //reset the colors and move the pattern one to the right. 
-            resetStringAndPattern(inputString, pattern, i_t, rectangleDimension);
-            i_t = i_t + 1;
-            movePattern(i_t - 1, i_t, rectangleDimension, pattern, pattern.length);
-
-            outputArray.push(i_t, 0);
-            return 0;
-        }
-    }
-
-
-    while (true) {
-        if(reset){
-            reset = false; 
-            context.clearRect(0, 0, width, height);
-            return 0; 
-        }
-        else if (!paused) {
-            await inner_iter(inputString, pattern, previous_i_t, previous_i_p, n_t, n_p, rectangleDimension);
-            console.log(outputArray.length);
-            if (outputArray.length < 2) {
+    while(true){
+        if (!paused) {
+            iterReturnArray = inner_iter(inputString, pattern, previous_i_t, previous_i_p, n_t, n_p, rectangleDimension);
+            if(!(iterReturnArray.length < 2)){
+                previous_i_t = iterReturnArray[0];
+                previous_i_p = iterReturnArray[1];
+            }
+            //algorithm is done so return from the function.
+            else{
                 return 0;
-            }
-            else {
-                previous_i_t = outputArray[0];
-                previous_i_p = outputArray[1];
-                outputArray = [];
-            }
-        }
-        else{
-            await sleep(500);
+            }      
         }
     }
 }
 
 
+
+//beginning of the pattern matching algorithms from the course.
+
+
+
+//brute force
+
+
+async function inner_iter(inputString, pattern, i_t, i_p, n_t, n_p, rectangleDimension) {
+
+    var outputArray = [];
+    //pattern matches somewhere in the string. Return the index of the first character matching. 
+    if (i_p > (n_p - 1)) {
+        functionRunning = false;
+        outputArray.concat(i_t);
+        return outputArray;
+    }
+
+    //The pattern is not present in the string. Return false. 
+    else if (i_t > (n_t - n_p)) {
+        functionRunning = false;
+        outputArray.concat(false);
+        return outputArray;
+    }
+
+    //the characters of where we are in the string and where we are in the pattern match. Draw green rectangles to visualise this and go to the next pair of characters.  
+    else if (inputString[(i_t + i_p)] === pattern[i_p]) {
+
+        //lil comment. I use grey squares to indicate which two symbols are being compares. 
+        drawStringAndPatternRetcs(inputString, pattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "grey", "black");
+        await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
+
+        drawStringAndPatternRetcs(inputString, pattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "green", "black");
+        await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
+
+        outputArray.concat(i_t);
+        outputArray.concat(i_p + 1);
+        return outputArray;
+    }
+
+    //The two characters do not match. Draw red rectangles to visualise this, move the pattern and move on to the next pair of characters. 
+    else {
+
+        drawStringAndPatternRetcs(inputString, pattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "grey", "black");
+        await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
+
+        drawStringAndPatternRetcs(inputString, pattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "red", "black");
+        await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
+
+        //reset the colors and move the pattern one to the right. 
+        resetStringAndPattern(inputString, pattern, i_t, rectangleDimension);
+        i_t = i_t + 1;
+        movePattern(i_t - 1, i_t, rectangleDimension, pattern, pattern.length);
+
+        outputArray.concat(i_t);
+        outputArray.concat(0);
+        return outputArray;
+    }
+}
 
 
 
@@ -265,27 +256,24 @@ function computeShiftTable(pattern) {
 
 
 //match fucntion
-export async function VisualQucikSearch(inputString, userPattern, rectangleDimension) {
+export function VisualQucikSearch(inputString, userPattern, rectangleDimension) {
+    functionRunning = true;
     const n_t = inputString.length;
     const n_p = userPattern.length;
     let shift = computeShiftTable(userPattern);
 
-    var previous_i_t = 0;
-    var previous_i_p = 0;
-    var outputArray = [];
-
-    async function inner_iter(inputString, userPattern, i_t, i_p, n_t, n_p, rectangleDimension) {
+    async function inner_iter(i_t, i_p) {
 
         //pattern matches somewhere in the string. Return the index of the first character matching. 
         if (i_p > (n_p - 1)) {
-            outputArray.push(i_t);
-            return 0;
+            functionRunning = false;
+            return i_t;
         }
 
         //The pattern is not present in the string. Return false. 
         else if (i_t > (n_t - n_p)) {
-            outputArray.push(false);
-            return 0;
+            functionRunning = false;
+            return false;
         }
 
         //the characters of where we are in the string and where we are in the pattern match. Draw green rectangles to visualise this and go to the next pair of characters. 
@@ -296,8 +284,7 @@ export async function VisualQucikSearch(inputString, userPattern, rectangleDimen
             drawStringAndPatternRetcs(inputString, userPattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "green", "black");
             await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
 
-            outputArray.push(i_t, i_p + 1);
-            return 0;
+            return inner_iter(i_t, (i_p + 1));
         }
 
         //the characters of where we are in the string and where we are in the pattern don't match. Draw red rectangles to visualise this, compute how many positions the pattern can shift to the right, 
@@ -334,32 +321,9 @@ export async function VisualQucikSearch(inputString, userPattern, rectangleDimen
             resetStringAndPattern(inputString, userPattern, i_t, rectangleDimension);
             movePattern(i_t - shiftAmount, i_t, rectangleDimension, userPattern, n_p);
 
-            outputArray.push(i_t, 0);
-            return 0;
+            return inner_iter(i_t, 0);
         }
     }
 
-    while (true) {
-        if(reset){
-            reset = false;
-            context.clearRect(0, 0, width, height);
-            return 0;
-        }
-
-        else if (!paused) {
-            await inner_iter(inputString, userPattern, previous_i_t, previous_i_p, n_t, n_p, rectangleDimension);
-            console.log(outputArray.length);
-            if (outputArray.length < 2) {
-                return 0;
-            }
-            else {
-                previous_i_t = outputArray[0];
-                previous_i_p = outputArray[1];
-                outputArray = [];
-            }
-        }
-        else{
-            await sleep(200);
-        }
-    }
+    return (inner_iter(0, 0));
 }
