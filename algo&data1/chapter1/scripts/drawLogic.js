@@ -15,9 +15,6 @@ export function drawStokeRect(x, y, w, h){
 }
 
 
-
-
-
 export function drawRectWithInputString(string, x, y, rectDimension, textSize, stringIndex, rectColor, textColor, rectangleDrawFunc){
         //draws the rectangle
         context.fillStyle = rectColor;
@@ -28,7 +25,6 @@ export function drawRectWithInputString(string, x, y, rectDimension, textSize, s
         context.font = `${textSize}px arial`;
         context.fillText(string[stringIndex], (rectDimension * x) + (rectDimension/10), rectDimension - ((1/5) * rectDimension));   
 }
-
 
 
 export function drawRectWithPattern(pattern, x, y, rectDimension, textSize, stringIndex, rectClor, textColor, rectangleDrawFunc){
@@ -43,15 +39,12 @@ export function drawRectWithPattern(pattern, x, y, rectDimension, textSize, stri
 }
 
 
-
-
-
-
 export function drawInputString(string, rectangleDimension, textSize){
     for(let i = 0; i < string.length; i++){
         drawRectWithInputString(string, i, 0, rectangleDimension, textSize, i, "black", "black", drawStokeRect);
     }
 }
+
 
 export function drawPattern(pattern, startingPoint, rectangleDimension, textSize){
     let indexInString = 0;
@@ -76,7 +69,6 @@ export function resetPatternRectangle(pattern, startingPoint, rectangleDimension
 
     }
 }
-
 
 
 export function movePattern(previousStartingPoint, newStartingPoint, rectangleDimension, pattern, patternLength){

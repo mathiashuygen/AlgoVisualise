@@ -1,6 +1,6 @@
 
 import { context, width,  height, drawRectWithInputString, drawRectWithPattern, drawFillRect, drawInputString, resetInputRectangle, resetPatternRectangle, movePattern } from "./drawLogic.js";
-import { resetButton, slider, changeSliderValue, pauseButton } from "./buttons.js";
+import { resetButton, slider, changeSliderValue, pauseButton, backButton } from "./buttons.js";
 
 
 
@@ -21,7 +21,9 @@ var paused = false;
 
 
 
-
+var previous_i_t = 0;
+var previous_i_p = 0;
+var outputArray = [];
 
 
 
@@ -76,12 +78,27 @@ var reset = false;
 //resets the canvas. 
 function resetCanvas(){
     reset = true; 
+    context.clearRect(0, 0, width, height);
 }
 
 
 resetButton.addEventListener("click", resetCanvas)
 
 
+
+
+
+//variable to hold register if a user wishes to go back in the algorithm.
+var goBack = false;
+
+
+//back button to go one step at a time back in the algorithm.
+function stepBack(){
+    goBack = true;
+}
+
+
+backButton.addEventListener("click", stepBack);
 
 
 //I created this function to replace two liners by a one liners. It's just to clean up the code. This functions draws rectangle for the input string and pattern at given indeces.
@@ -115,10 +132,6 @@ export async function VisualbruteForce(inputString, pattern, rectangleDimension)
 
     const n_t = inputString.length;
     const n_p = pattern.length;
-
-    var previous_i_t = 0;
-    var previous_i_p = 0;
-    var outputArray = [];
 
     async function inner_iter(inputString, pattern, i_t, i_p, n_t, n_p, rectangleDimension) {
 
@@ -175,21 +188,46 @@ export async function VisualbruteForce(inputString, pattern, rectangleDimension)
             context.clearRect(0, 0, width, height);
             return 0; 
         }
-        else if (!paused) {
-            await inner_iter(inputString, pattern, previous_i_t, previous_i_p, n_t, n_p, rectangleDimension);
-            console.log(outputArray.length);
-            if (outputArray.length < 2) {
-                return 0;
+        else{ 
+            if(goBack){
+                goBack = false;
+
+
+                if(previous_i_t > 0){
+                    previous_i_t = previous_i_t - 1;
+
+                    if(previous_i_p > 0){
+                        previous_i_p = previous_i_p - 1;
+                    }
+                    else{
+                        movePattern(previous_i_t + 1, previous_i_t, rectangleDimension, pattern, pattern.length);
+                    }
+
+                }
+                else{
+                    if(previous_i_p > 0){
+                        previous_i_p = previous_i_p - 1;
+                    }
+                }
             }
-            else {
-                previous_i_t = outputArray[0];
-                previous_i_p = outputArray[1];
-                outputArray = [];
+            
+
+            if (!paused) {
+                await inner_iter(inputString, pattern, previous_i_t, previous_i_p, n_t, n_p, rectangleDimension);
+                if (outputArray.length < 2) {
+                    return 0;
+                }
+                else {
+                    previous_i_t = outputArray[0];
+                    previous_i_p = outputArray[1];
+                    outputArray = [];
+                }
             }
-        }
-        else{
-            await sleep(500);
-        }
+
+            else{
+                await sleep(500);
+            }
+    }
     }
 }
 
@@ -270,9 +308,7 @@ export async function VisualQucikSearch(inputString, userPattern, rectangleDimen
     const n_p = userPattern.length;
     let shift = computeShiftTable(userPattern);
 
-    var previous_i_t = 0;
-    var previous_i_p = 0;
-    var outputArray = [];
+    
 
     async function inner_iter(inputString, userPattern, i_t, i_p, n_t, n_p, rectangleDimension) {
 

@@ -11,6 +11,7 @@ export const resetButton = document.querySelector(".resetButton");
 export const slider = document.querySelector(".slider");
 export const sliderVal = document.querySelector(".valueVisual");
 export const pauseButton = document.querySelector(".pauseButton");
+export const backButton = document.querySelector(".backButton");
 
 export function changeSliderValue(newVal){
     sliderVal.textContent = newVal;
