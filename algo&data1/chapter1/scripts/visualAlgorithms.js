@@ -90,15 +90,35 @@ resetButton.addEventListener("click", resetCanvas)
 
 //variable to hold register if a user wishes to go back in the algorithm.
 var goBack = false;
+var patternNewStartingPoint = 0;
+var patternOldStartingPoint = 0;
+
 
 
 //back button to go one step at a time back in the algorithm.
 function stepBack(){
     goBack = true;
+    patternOldStartingPoint = previous_i_t;
+
+    if(previous_i_t > 0){
+        previous_i_t = previous_i_t - 1;
+
+        if(previous_i_p > 0){
+            previous_i_p = previous_i_p - 1;
+        }
+        else{
+            patternNewStartingPoint = previous_i_t;
+        }
+    }
+    else{
+        if(previous_i_p > 0){
+            previous_i_p = previous_i_p - 1;
+        }
+    }
 }
 
 
-backButton.addEventListener("click", stepBack);
+//backButton.addEventListener("click", stepBack);
 
 
 //I created this function to replace two liners by a one liners. It's just to clean up the code. This functions draws rectangle for the input string and pattern at given indeces.
@@ -133,7 +153,7 @@ export async function VisualbruteForce(inputString, pattern, rectangleDimension)
     const n_t = inputString.length;
     const n_p = pattern.length;
 
-    async function inner_iter(inputString, pattern, i_t, i_p, n_t, n_p, rectangleDimension) {
+    async function inner_iter(i_t, i_p) {
 
         
         //pattern matches somewhere in the string. Return the index of the first character matching. 
@@ -186,34 +206,23 @@ export async function VisualbruteForce(inputString, pattern, rectangleDimension)
         if(reset){
             reset = false; 
             context.clearRect(0, 0, width, height);
-            return 0; 
+            previous_i_t = 0;
+            previous_i_p = 0;
+            return 0;
         }
         else{ 
+
             if(goBack){
                 goBack = false;
-
-
-                if(previous_i_t > 0){
-                    previous_i_t = previous_i_t - 1;
-
-                    if(previous_i_p > 0){
-                        previous_i_p = previous_i_p - 1;
-                    }
-                    else{
-                        movePattern(previous_i_t + 1, previous_i_t, rectangleDimension, pattern, pattern.length);
-                    }
-
-                }
-                else{
-                    if(previous_i_p > 0){
-                        previous_i_p = previous_i_p - 1;
-                    }
-                }
+                movePattern(patternOldStartingPoint, patternNewStartingPoint, rectangleDimension, pattern, pattern.length);
             }
+
+                
             
 
-            if (!paused) {
-                await inner_iter(inputString, pattern, previous_i_t, previous_i_p, n_t, n_p, rectangleDimension);
+            else if (!paused) {
+                await inner_iter(previous_i_t, previous_i_p);
+                console.log(outputArray.length);
                 if (outputArray.length < 2) {
                     return 0;
                 }
@@ -310,7 +319,7 @@ export async function VisualQucikSearch(inputString, userPattern, rectangleDimen
 
     
 
-    async function inner_iter(inputString, userPattern, i_t, i_p, n_t, n_p, rectangleDimension) {
+    async function inner_iter(i_t, i_p) {
 
         //pattern matches somewhere in the string. Return the index of the first character matching. 
         if (i_p > (n_p - 1)) {
@@ -379,11 +388,13 @@ export async function VisualQucikSearch(inputString, userPattern, rectangleDimen
         if(reset){
             reset = false;
             context.clearRect(0, 0, width, height);
+            previous_i_t = 0;
+            previous_i_p = 0;
             return 0;
         }
 
         else if (!paused) {
-            await inner_iter(inputString, userPattern, previous_i_t, previous_i_p, n_t, n_p, rectangleDimension);
+            await inner_iter(previous_i_t, previous_i_p);
             console.log(outputArray.length);
             if (outputArray.length < 2) {
                 return 0;
@@ -398,4 +409,125 @@ export async function VisualQucikSearch(inputString, userPattern, rectangleDimen
             await sleep(200);
         }
     }
+}
+
+
+
+
+
+
+
+
+//KMP hell
+function computeFailureFunction(pattern){
+    const n_p = pattern.length;
+
+    //sigma table definition
+    var sigmaTable = [];
+    for(let i = 0; i < pattern.length; i++){
+        sigmaTable.push(0);
+    }
+
+    function innerLoop(i_p, k){
+        if(i_p < n_p){
+            if(pattern[k] === pattern[i_p - 1]){
+                sigmaTable[i_p] = k + 1;
+                innerLoop(i_p + 1, k + 1);
+            }
+            else if(k > 0){
+                innerLoop(i_p, sigmaTable[k]);
+            }
+            else{
+                sigmaTable[i_p] = 0;
+                innerLoop(i_p + 1, k);
+            }
+        }
+
+        else{
+            return 0;
+        }
+    }
+
+    innerLoop(2, 0);
+
+    sigmaTable[0] = -1;
+
+    return (q) =>{
+        return sigmaTable[q];
+    }
+}
+
+
+
+
+export async function VisualKMP(inputString, pattern, rectangleDimension){
+    const n_t = inputString.length;
+    const n_p = pattern.length;
+    var prev_i_t = 0;
+    let sigma = computeFailureFunction(pattern);
+
+    async function inner_iter(i_t, i_p){
+        if(i_p > (n_p - 1)){
+            outputArray.push(true);
+        }
+        else if(i_t > (n_t - n_p)){
+            outputArray.push(false);
+        }
+        else if(inputString[i_t + i_p] === pattern[i_p]){
+            drawStringAndPatternRetcs(inputString, pattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "grey", "black");
+            await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
+
+            drawStringAndPatternRetcs(inputString, pattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "green", "black");
+            await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
+            
+            outputArray.push(i_t, i_p + 1);
+        }   
+        else{   
+            drawStringAndPatternRetcs(inputString, pattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "grey", "black");
+            await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
+
+            drawStringAndPatternRetcs(inputString, pattern, (i_t + i_p), 0, (i_t + i_p), rectangleDimension, (i_t + i_p), i_p, rectangleDimension, "red", "black");
+            await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
+
+            prev_i_t = i_t;
+            i_t = i_t + (i_p - sigma(i_p));
+            i_p = i_p > 0 ? sigma(i_p) : 0;
+
+            resetStringAndPattern(inputString, pattern, prev_i_t, rectangleDimension);
+            movePattern(prev_i_t, i_t, rectangleDimension, pattern, pattern.length);
+
+            outputArray.push(i_t, i_p);
+        }
+    }
+
+
+
+
+    while (true) {
+        if(reset){
+            reset = false;
+            context.clearRect(0, 0, width, height);
+            previous_i_t = 0;
+            previous_i_p = 0;
+            return 0;
+        }
+
+        else if (!paused) {
+            await inner_iter(previous_i_t, previous_i_p);
+            console.log(outputArray.length);
+            if (outputArray.length < 2) {
+                return 0;
+            }
+            else {
+                previous_i_t = outputArray[0];
+                previous_i_p = outputArray[1];
+                outputArray = [];
+            }
+        }
+        else{
+            await sleep(200);
+        }
+    }
+
+
 }

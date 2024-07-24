@@ -2,7 +2,7 @@
 
 //init for canvas. Used to draw.
 import { canvas, context, width, height, drawInputString, drawPattern } from "./drawLogic.js";
-import { VisualbruteForce, VisualQucikSearch } from "./visualAlgorithms.js";
+import { VisualbruteForce, VisualQucikSearch, VisualKMP } from "./visualAlgorithms.js";
 import { algorithmPicker, stringInputField, stringInputFieldPattern, submitField } from "./buttons.js";
 
 
@@ -33,6 +33,9 @@ function handleTextInput(){
     }
     else if(algorithmPicker.value === "QuickSearch"){
         VisualQucikSearch(userString, userPattern, rectangle_dimensions);
+    }
+    else if(algorithmPicker.value === "KMP"){
+        VisualKMP(userString, userPattern, rectangle_dimensions);
     }
     
     
