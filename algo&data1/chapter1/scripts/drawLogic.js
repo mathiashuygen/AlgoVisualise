@@ -16,27 +16,41 @@ export function drawStokeRect(x, y, w, h){
 
 
 export function drawRectWithInputString(string, x, y, rectDimension, textSize, stringIndex, rectColor, textColor, rectangleDrawFunc){
-        //draws the rectangle
-        context.fillStyle = rectColor;
-        rectangleDrawFunc((rectDimension * x), y, rectDimension, rectDimension);
+    //draws the rectangle
+    context.fillStyle = rectColor;
+    rectangleDrawFunc((rectDimension * x), y, rectDimension, rectDimension);
 
-        //draws the char in a rectangle
-        context.fillStyle = textColor;
-        context.font = `${textSize}px arial`;
-        context.fillText(string[stringIndex], (rectDimension * x) + (rectDimension/10), rectDimension - ((1/5) * rectDimension));   
+    //draws the char in a rectangle
+    context.fillStyle = textColor;
+    context.font = `${textSize}px arial`;
+    context.fillText(string[stringIndex], (rectDimension * x) + (rectDimension/10), rectDimension - ((1/5) * rectDimension));   
 }
 
 
 export function drawRectWithPattern(pattern, x, y, rectDimension, textSize, stringIndex, rectClor, textColor, rectangleDrawFunc){
-        //draws the rectangle
-        context.fillStyle = rectClor;
-        rectangleDrawFunc((rectDimension * x), y, rectDimension, rectDimension);
+    //draws the rectangle
+    context.fillStyle = rectClor;
+    rectangleDrawFunc((rectDimension * x), y, rectDimension, rectDimension);
 
-        //draws the char in a rectangle
-        context.fillStyle = textColor;
-        context.font = `${textSize}px arial`;
-        context.fillText(pattern[stringIndex], (rectDimension * x) + (rectDimension/10), 2*rectDimension - ((1/5) * rectDimension));
+    //draws the char in a rectangle
+    context.fillStyle = textColor;
+    context.font = `${textSize}px arial`;
+    context.fillText(pattern[stringIndex], (rectDimension * x) + (rectDimension/10), 2*rectDimension - ((1/5) * rectDimension));
 }
+
+
+
+export function drawRectWithText(text, x, y, rectDimension, textSize, rectColor, textColor, rectangleDrawFunc){
+    context.fillStyle = rectColor;
+    rectangleDrawFunc(rectDimension * x, y, rectDimension, rectDimension);
+
+    context.fillStyle = textColor;
+    context.font = `${textSize}px arial`;
+    context.fillText(text, (rectDimension * x) + (rectDimension/10), 2*rectDimension - ((1/5) * rectDimension));
+}
+
+
+
 
 
 export function drawInputString(string, rectangleDimension, textSize){
@@ -66,14 +80,12 @@ export function resetPatternRectangle(pattern, startingPoint, rectangleDimension
     for(let i = startingPoint; indexInString < pattern.length; i++){
         context.clearRect(rectangleDimension * i, rectangleDimension, rectangleDimension, rectangleDimension);
         indexInString += 1;
-
     }
 }
 
 
 export function movePattern(previousStartingPoint, newStartingPoint, rectangleDimension, pattern, patternLength){
     resetPatternRectangle(pattern, previousStartingPoint, rectangleDimension);
-    drawPattern(pattern, newStartingPoint, rectangleDimension, rectangleDimension);
-    
+    drawPattern(pattern, newStartingPoint, rectangleDimension, rectangleDimension); 
 }
 

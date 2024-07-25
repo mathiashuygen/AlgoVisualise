@@ -1,5 +1,5 @@
 
-import { context, width,  height, drawRectWithInputString, drawRectWithPattern, drawFillRect, drawInputString, resetInputRectangle, resetPatternRectangle, movePattern } from "./drawLogic.js";
+import { context, width,  height, drawRectWithInputString, drawRectWithPattern, drawFillRect, drawInputString, resetInputRectangle, resetPatternRectangle, movePattern, drawStokeRect, drawPattern, drawRectWithText } from "./drawLogic.js";
 import { resetButton, slider, changeSliderValue, pauseButton, backButton } from "./buttons.js";
 
 
@@ -419,7 +419,7 @@ export async function VisualQucikSearch(inputString, userPattern, rectangleDimen
 
 
 //KMP hell
-function computeFailureFunction(pattern){
+async function computeFailureFunction(pattern, rectangleDimension){
     const n_p = pattern.length;
 
     //sigma table definition
@@ -428,18 +428,46 @@ function computeFailureFunction(pattern){
         sigmaTable.push(0);
     }
 
-    function innerLoop(i_p, k){
+    
+    drawPattern(pattern, 0, rectangleDimension, rectangleDimension);
+    for(let i = 0; i < pattern.length; i++){
+        drawRectWithText("", i, rectangleDimension, rectangleDimension, rectangleDimension, "black", "black", drawStokeRect);
+    }
+
+    await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
+
+    async function innerLoop(i_p, k){
         if(i_p < n_p){
             if(pattern[k] === pattern[i_p - 1]){
+                drawRectWithPattern(pattern, i_p - 1, 0, rectangleDimension, rectangleDimension, i_p - 1, "grey", "black", drawFillRect);
+                drawRectWithPattern(pattern, k, 0, rectangleDimension, rectangleDimension, k, "grey", "black", drawFillRect);
+                await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
+
+                drawRectWithPattern(pattern, i_p - 1, 0, rectangleDimension, rectangleDimension, i_p - 1, "green", "black", drawFillRect);
+                drawRectWithPattern(pattern, k, 0, rectangleDimension, rectangleDimension, k, "green", "black", drawFillRect);
+                await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
+
+                drawRectWithText("", i_p, rectangleDimension, rectangleDimension, rectangleDimension, "grey", "black", drawFillRect);
+                await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
+
+                drawRectWithText(k + 1, i_p, rectangleDimension, rectangleDimension, rectangleDimension, "grey", "black", drawFillRect);
                 sigmaTable[i_p] = k + 1;
-                innerLoop(i_p + 1, k + 1);
+                await innerLoop(i_p + 1, k + 1);
             }
             else if(k > 0){
-                innerLoop(i_p, sigmaTable[k]);
+                drawRectWithPattern(pattern, i_p - 1, 0, rectangleDimension, rectangleDimension, i_p - 1, "grey", "black", drawFillRect);
+                drawRectWithPattern(pattern, k, 0, rectangleDimension, rectangleDimension, k, "grey", "black", drawFillRect);
+                await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
+
+                drawRectWithPattern(pattern, i_p - 1, 0, rectangleDimension, rectangleDimension, i_p - 1, "red", "black", drawFillRect);
+                drawRectWithPattern(pattern, k, 0, rectangleDimension, rectangleDimension, k, "red", "black", drawFillRect);
+                await sleep(defaultFunctionExecutionSpeed / functionExecutionSpeedFactor);
+
+                await innerLoop(i_p, sigmaTable[k]);
             }
             else{
                 sigmaTable[i_p] = 0;
-                innerLoop(i_p + 1, k);
+                await innerLoop(i_p + 1, k);
             }
         }
 
@@ -448,7 +476,7 @@ function computeFailureFunction(pattern){
         }
     }
 
-    innerLoop(2, 0);
+    await innerLoop(2, 0);
 
     sigmaTable[0] = -1;
 
@@ -464,7 +492,10 @@ export async function VisualKMP(inputString, pattern, rectangleDimension){
     const n_t = inputString.length;
     const n_p = pattern.length;
     var prev_i_t = 0;
-    let sigma = computeFailureFunction(pattern);
+
+    resetStringAndPattern(inputString, pattern, 0, rectangleDimension);
+    let sigma = await computeFailureFunction(inputString, pattern, rectangleDimension);
+
 
     async function inner_iter(i_t, i_p){
         if(i_p > (n_p - 1)){
@@ -495,6 +526,12 @@ export async function VisualKMP(inputString, pattern, rectangleDimension){
 
             resetStringAndPattern(inputString, pattern, prev_i_t, rectangleDimension);
             movePattern(prev_i_t, i_t, rectangleDimension, pattern, pattern.length);
+
+            if(i_p > 0){
+                for(let i = 0; i <= i_p; i++){
+                    drawStringAndPatternRetcs(inputString, pattern, i_t + i, 0, i_t + i, rectangleDimension, i_t + i, i, rectangleDimension, "lavender", "black");
+                }
+            }
 
             outputArray.push(i_t, i_p);
         }
