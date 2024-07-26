@@ -4,16 +4,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="author" content="Mathias Huygen">
-    <title>Chapter 1 algorithms </title>
+    <title>Sorting</title>
 
-    <link rel="icon" href="courseIcon.jpeg" type="image/x-icon">
-    <link rel="stylesheet" href="../../main.css" type="text/css">
+    <link rel="icon" href="../../images/courseIcon.jpeg" type="image/x-icon">
+    <link rel="stylesheet" href="chapter4Main.css" type="text/css">
+
+    <script src="scripts/chapter1Main.js" type="module" defer></script>
+    <script src="scripts/drawLogic.js" type="module" defer></script>
 
 </head>
 
 
 <body>
-    <h1>Chapter 4 algorithms</h1>
+    <section class="menuBar">
+        <div class="menuSection">
+            <a href="../../main/index.html" class="menuLink"> <p>Home</p> </a>
+        </div>
+
+        <div class="menuSection">
+            <a href="../../menu/about/about.html" class="menuLink"> <p>About</p> </a>
+        </div>
+
+        <div class="menuSection">
+            <a href="../../menu/contact/contact.html" class="menuLink"> <p>Contact</p> </a>
+        </div>
+    </section>
+
+
+    <div class="selector">
+        <label for="AlgorithmPicker">Choose algorithm:</label>
+        <select name="AlgorithmPicker" id="algorithms" class="algorithmPicker">
+
+            <option value="BubbleSort">Bubble Sort</option>
+            <option value="InsertionSort">Insertion Sort</option>
+            <option value="SelectionSort">Selection Sort</option>
+
+            <option value="QuickSort">QuickSort</option>
+            <option value="MergeSort">MergeSort</option>
+            <option value="HeapSort">HeapSort</option>
+
+            <option value="RadixSort">RadixSort</option>
+            <option value="Counting Sort">Counting Sort</option>
+            <option value="BucketSort">Bucket Sort</option>
+
+        </select>
+    </div>
+
+    <section class="userInput"> 
+        <div class="stringInput">
+            <label for="numberField">Enter a value:</label>
+            <input type="number" id="numberField" class="numberField">
+        </div>  
+
+        <br>
+        <div class="controlFlowButtons">
+            <button type="button" class="addValue">add value</button>
+            <button type="button" class="resetButton">↺</button>
+            <label for="slider">Execution speed:</label>
+            <input type="range" min="1" max="6" value="1" class="slider" id="myRange">
+            <span class="valueVisual">x1</span>
+            <button type="button" class="backButton"> < </button>
+            <button type="button" class="pauseButton">||</button>
+        </div>
+        
+
+    </section>
+
+
+    <canvas class="AlgorithmVisualiser" >
+        <p>canvas that visualises the steps of the algorithm</p>
+    </canvas>
+
+  
 
 </body>
 
