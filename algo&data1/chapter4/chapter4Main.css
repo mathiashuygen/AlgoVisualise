@@ -84,6 +84,12 @@ input[type=number]{
     margin-left: 2rem;
 }
 
+.startAlgorithm{
+    font-size: 80%;
+    width: 8rem;
+    margin-right: 1rem;
+}
+
 .resetButton{
     font-size: 80%;
     width: 6rem;
@@ -106,5 +112,4 @@ input[type=number]{
 
 canvas{
     margin-top: 2rem;
-    border: 2px solid red;
 }
