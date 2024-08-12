@@ -1,11 +1,11 @@
 
-import { resetButton, executionSlider, backButton, pauseButton, changeSliderValue } from "./buttons.js";
-import { drawStokeRect, drawFillRect, drawRect, drawIndexText, clearIndexText } from "./drawLogic.js";
+import { resetButton, executionSlider, pauseButton, changeSliderValue } from "./buttons.js";
+import { drawFillRect, drawRect, drawIndexText, clearIndexText, width, height, context, rectYPos, overlappingTextYPos } from "./drawLogic.js";
 
 
-
-const defaultFunctionExecutionSpeed = 2000;
-var executionSpeedFactor = executionSlider.valuel;
+//default of 1s sleep.
+const defaultFunctionExecutionSpeed = 1000;
+var executionSpeedFactor = executionSlider.value;
 
 
 
@@ -17,6 +17,52 @@ function UpdateExecutionSpeed() {
 }
 
 executionSlider.addEventListener("input", UpdateExecutionSpeed);
+
+
+
+
+
+
+
+var reset = false; 
+
+
+//resets the canvas. 
+function resetCanvas(){
+    reset = true; 
+}
+
+
+resetButton.addEventListener("click", resetCanvas)
+
+
+
+
+
+
+var paused = false;
+
+
+
+
+function updatePauseButton() {
+
+    if (paused) {
+        paused = false;
+        pauseButton.textContent = "||";
+
+
+    }
+    else {
+        paused = true;
+        pauseButton.textContent = "▷";
+    }
+}
+
+pauseButton.addEventListener("click", updatePauseButton);
+
+
+
 
 
 
@@ -40,15 +86,27 @@ function stepVisualiser(idx1, idx2, rectColor, textColor, drawRectFunc, array){
     drawRect(idx2, array[idx2], rectColor, textColor, drawRectFunc);
 }
 
+
+
+function colorArray(array, color){
+    for(let i = 0; i < array.length; i++){
+        drawRect(i, array[i], color, "black", drawFillRect);
+    }
+}
+
+
+
+
+
 export async function VisualBubbleSort(arrayToSort){
 
     var unsorted_idx = arrayToSort.length - 2;
     var inner_idx = 0;
     var has_changed = false;
 
+
+
     async function bubble_swap(idx1, idx2){
-
-
         let keep = arrayToSort[idx1];
         arrayToSort[idx1] = arrayToSort[idx2];
         arrayToSort[idx2] = keep;
@@ -63,17 +121,25 @@ export async function VisualBubbleSort(arrayToSort){
         return true;
     }
 
+
+
+
+
     async function inner_loop(){
-        /*
-        drawIndexText(inner_idx, "inner idx", "purple");
-        drawIndexText(unsorted_idx, "unsorted idx", "green");
-        clearIndexText(inner_idx);
-        clearIndexText(unsorted_idx);
-        */
 
 
+        
+
+        if(inner_idx !== unsorted_idx){
+            drawIndexText(inner_idx, rectYPos, "inner idx", "green");
+            drawIndexText(unsorted_idx, rectYPos, "unsorted idx", "purple");
+        }
+        else{
+            drawIndexText(inner_idx, overlappingTextYPos, "inner idx", "green");
+            drawIndexText(unsorted_idx, rectYPos, "unsorted idx", "purple");
+        }
         if(inner_idx > unsorted_idx){
-            drawRect(unsorted_idx, arrayToSort[unsorted_idx], "green", "black", drawFillRect);
+            drawRect(inner_idx, arrayToSort[inner_idx], "green", "black", drawFillRect);
             await sleep(defaultFunctionExecutionSpeed / executionSpeedFactor);
             outputArray.push("outer");
             outputArray.push(has_changed);
@@ -112,46 +178,87 @@ export async function VisualBubbleSort(arrayToSort){
     
     
     while(true){
-        let loopToRun = outputArray[0];
 
-        if(loopToRun === "begin"){
-            if(unsorted_idx >= 0){
-                outputArray = [];
-                outputArray.push("inner");
-                outputArray.push(0);
-                outputArray.push(false);
-            }
-            else{
-                console.log("empty array");
-                return 0;
-            }
+        clearIndexText(inner_idx);
+        clearIndexText(unsorted_idx);
+        if(reset){
+            context.clearRect(0, 0, width, height);
+            reset = false;
+            outputArray = [];
+            outputArray.push("begin");
+            return 0;
         }
 
+        else if(!paused){
+            let loopToRun = outputArray[0];
 
-        else if(loopToRun === "outer"){
-            if(outputArray[1]){
-                unsorted_idx = unsorted_idx - 1;
-                outputArray = [];
+            if(loopToRun === "begin"){
                 if(unsorted_idx >= 0){
+                    outputArray = [];
                     outputArray.push("inner");
                     outputArray.push(0);
                     outputArray.push(false);
                 }
                 else{
-                    console.log("unsorted idx < 0");
-                    return 0;
+                    paused = true;
                 }
             }
-            else{
-                console.log("nothing changed in this iteration");
-                return 0;
+
+
+            else if(loopToRun === "outer"){
+                if(outputArray[1]){
+                    unsorted_idx = unsorted_idx - 1;
+                    outputArray = [];
+                    if(unsorted_idx >= 0){
+                        outputArray.push("inner");
+                        outputArray.push(0);
+                        outputArray.push(false);
+                    }
+                    else{
+                        paused = true;
+                        colorArray(arrayToSort, "green");
+                    }
+                }
+                else{
+                    paused = true;
+                    colorArray(arrayToSort, "green");
+                }
+            }
+            else if(loopToRun === "inner"){
+                inner_idx = outputArray[1];
+                has_changed = outputArray[2];
+                outputArray = [];
+                await inner_loop();
             }
         }
-        else if(loopToRun === "inner"){
-            inner_idx = outputArray[1];
-            has_changed = outputArray[2];
-            outputArray = [];
-            await inner_loop();
+        else{
+            await sleep(200);
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,4 +1,4 @@
-import { algorithmPicker,  userInput, addValueButton, startAlgorithmButton} from "./buttons.js";
+import { algorithmPicker,  userInput, addValueButton, startAlgorithmButton, resetButton} from "./buttons.js";
 import { maxAmountOfRects, drawRect, drawStokeRect, drawFillRect } from "./drawLogic.js";
 import { VisualBubbleSort } from "./VisualSorting.js";
 
@@ -7,10 +7,18 @@ import { VisualBubbleSort } from "./VisualSorting.js";
 
 
 
-var rectAmount = 0; 
 
 
 var userInputArray = [];
+
+
+
+var rectAmount = 0; 
+
+resetButton.addEventListener("click", ()=>{
+    rectAmount = 0;
+    userInputArray = [];
+});
 
 
 
@@ -46,10 +54,10 @@ userInput.addEventListener("keypress", (event) => {
 
 
 
-function algorithmStarter(){
+async function algorithmStarter(){
     switch(algorithmPicker.value){
         case "BubbleSort":
-            VisualBubbleSort(userInputArray);
+            await VisualBubbleSort(userInputArray);
 
         case "InsertionSort":
             return 0;

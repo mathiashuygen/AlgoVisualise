@@ -8,6 +8,7 @@
 body{
     min-height: 80vh;
     background-color: lightgray;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 h1{
@@ -57,7 +58,7 @@ a{
 
 .algorithmPicker{
     font-size: 70%;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    
 }
 
 
@@ -65,6 +66,7 @@ a{
 .userInput{
     font-size: 180%;
     margin-left: 1rem;
+    width: 300%;
 }
 
 input[type=number]{

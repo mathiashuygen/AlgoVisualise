@@ -6,7 +6,8 @@ canvas.width = width;
 canvas.height = height;
 const rectDimension = height/5;
 export const maxAmountOfRects = Math.floor(width/rectDimension);
-const rectYPos = height/2 - rectDimension
+export const rectYPos = height/2 - rectDimension
+export const overlappingTextYPos = rectYPos + rectDimension/3;
 
 
 
@@ -31,14 +32,13 @@ export function drawRect(xPos, value, rectColor, textColor, rectangleDrawFunc){
     context.fillText(value, (rectDimension * xPos) + (rectDimension/10), rectYPos + rectDimension - ((1/5) * rectDimension));
 }
 
-export function drawIndexText(xPos, indexText, textColor){
-    const yPosOffset = rectDimension/3;
+export function drawIndexText(xPos, yPos, indexText, textColor){
+    const yPosOffset = rectDimension/5;
     context.fillStyle = textColor;
     context.font = `${rectDimension/7}px arial`;
-    context.fillText(indexText, (rectDimension *  xPos) + (rectDimension/10), yPosOffset + rectYPos + rectDimension - ((1/5) * rectDimension));
+    context.fillText(indexText, (rectDimension *  xPos) + (rectDimension/10), yPosOffset + yPos + rectDimension);
 }
 
 export function clearIndexText(xPos){
-    const yPosOffset = rectDimension/3;
-    context.clearRect( (rectDimension *  xPos) + (rectDimension/10), yPosOffset + rectYPos + rectDimension - ((1/5) * rectDimension), rectDimension, rectDimension/7)
+    context.clearRect( (rectDimension * xPos), rectYPos + rectDimension, width, height)
 }
