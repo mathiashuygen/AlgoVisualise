@@ -7,6 +7,8 @@ export const executionSlider = document.querySelector(".slider");
 export const backButton = document.querySelector(".backButton");
 export const pauseButton = document.querySelector(".pauseButton");
 
+const sliderValueVisual = document.querySelector(".valueVisual");
+
 export function changeSliderValue(newVal){
-    executionSlider.textContent = newVal;
+    sliderValueVisual.textContent = newVal;
 }

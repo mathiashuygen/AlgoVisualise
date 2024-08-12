@@ -1,5 +1,6 @@
 import { algorithmPicker,  userInput, addValueButton, startAlgorithmButton} from "./buttons.js";
-import { maxAmountOfRects, drawRect, drawStokeRect } from "./drawLogic.js";
+import { maxAmountOfRects, drawRect, drawStokeRect, drawFillRect } from "./drawLogic.js";
+import { VisualBubbleSort } from "./VisualSorting.js";
 
 
 
@@ -16,15 +17,26 @@ var userInputArray = [];
 function handleUserSubmit(){
     if(rectAmount < maxAmountOfRects){
         let userVal = userInput.value
-        drawRect(rectAmount, userVal, "black", "black", drawStokeRect)
-        rectAmount = rectAmount + 1;
-        userInputArray.push(Number(userVal));
+
+        if(userVal != ""){
+            drawRect(rectAmount, userVal, "red", "black", drawFillRect)
+            rectAmount = rectAmount + 1;
+            userInputArray.push(Number(userVal));
+            userInput.value = "";
+        }
     }
 }
 
 
 addValueButton.addEventListener("click", handleUserSubmit);
 
+userInput.addEventListener("keypress", (event) => {
+    if(event.key === "Enter"){
+        handleUserSubmit();
+        
+    }
+}
+);
 
 
 
@@ -37,7 +49,7 @@ addValueButton.addEventListener("click", handleUserSubmit);
 function algorithmStarter(){
     switch(algorithmPicker.value){
         case "BubbleSort":
-            return 0;
+            VisualBubbleSort(userInputArray);
 
         case "InsertionSort":
             return 0;

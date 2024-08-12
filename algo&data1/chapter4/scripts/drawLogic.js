@@ -30,3 +30,15 @@ export function drawRect(xPos, value, rectColor, textColor, rectangleDrawFunc){
     context.font = `${textSize}px arial`;
     context.fillText(value, (rectDimension * xPos) + (rectDimension/10), rectYPos + rectDimension - ((1/5) * rectDimension));
 }
+
+export function drawIndexText(xPos, indexText, textColor){
+    const yPosOffset = rectDimension/3;
+    context.fillStyle = textColor;
+    context.font = `${rectDimension/7}px arial`;
+    context.fillText(indexText, (rectDimension *  xPos) + (rectDimension/10), yPosOffset + rectYPos + rectDimension - ((1/5) * rectDimension));
+}
+
+export function clearIndexText(xPos){
+    const yPosOffset = rectDimension/3;
+    context.clearRect( (rectDimension *  xPos) + (rectDimension/10), yPosOffset + rectYPos + rectDimension - ((1/5) * rectDimension), rectDimension, rectDimension/7)
+}
