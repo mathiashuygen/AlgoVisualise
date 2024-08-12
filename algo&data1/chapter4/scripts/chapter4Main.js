@@ -1,6 +1,6 @@
 import { algorithmPicker,  userInput, addValueButton, startAlgorithmButton, resetButton} from "./buttons.js";
 import { maxAmountOfRects, drawRect, drawStokeRect, drawFillRect } from "./drawLogic.js";
-import { VisualBubbleSort } from "./VisualSorting.js";
+import { VisualBubbleSort, VisualInsertionSort } from "./VisualSorting.js";
 
 
 
@@ -60,7 +60,7 @@ async function algorithmStarter(){
             await VisualBubbleSort(userInputArray);
 
         case "InsertionSort":
-            return 0;
+            await VisualInsertionSort(userInputArray);
 
         case "SelectionSort":
             return 0;
