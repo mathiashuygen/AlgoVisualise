@@ -440,42 +440,64 @@ export async function VisualSelectionSort(arrayToSort){
 
     while(true){
 
-        clearIndexText(outer_idx);
-        clearIndexText(inner_idx);
-        clearIndexText(smallest_idx);
-
-        var loopToRun = outputArray[0];
-
-        if(loopToRun === "begin"){
+        if(reset){
+            context.clearRect(0, 0, width, height);
+            reset = false;
             outputArray = [];
-            outputArray.push("inner");
-            outputArray.push(inner_idx);
-            outputArray.push(smallest_idx);
+            outputArray.push("begin");
+            return 0;
         }
-        else if(loopToRun === "outer"){
-            outer_idx = outputArray[1];
+        
 
-            if(outer_idx < (arrayToSort.length - 1)){
-                outer_idx = outer_idx + 1;
-                inner_idx = outer_idx + 1;
-                smallest_idx = outer_idx;
+        
+        else if(!paused){
 
+            clearIndexText(outer_idx);
+            clearIndexText(inner_idx);
+            clearIndexText(smallest_idx);
+
+            var loopToRun = outputArray[0];
+
+            
+            if(loopToRun === "begin"){
                 outputArray = [];
                 outputArray.push("inner");
                 outputArray.push(inner_idx);
                 outputArray.push(smallest_idx);
             }
-            else{
-                //algorithm is done
-                displayArray(arrayToSort);
-                return 0;
+
+            
+
+            if(loopToRun === "outer"){
+                outer_idx = outputArray[1];
+
+                if(outer_idx < (arrayToSort.length - 1)){
+                    outer_idx = outer_idx + 1;
+                    inner_idx = outer_idx + 1;
+                    smallest_idx = outer_idx;
+
+                    outputArray = [];
+                    outputArray.push("inner");
+                    outputArray.push(inner_idx);
+                    outputArray.push(smallest_idx);
+                }
+                else{
+                    //algorithm is done
+                    displayArray(arrayToSort);
+                    return 0;
+                }
+            }
+            else if(loopToRun === "inner"){
+                inner_idx = outputArray[1];
+                smallest_idx = outputArray[2];
+                outputArray = [];
+                await inner_loop();
             }
         }
-        else if(loopToRun === "inner"){
-            inner_idx = outputArray[1];
-            smallest_idx = outputArray[2];
-            outputArray = [];
-            await inner_loop();
+    
+
+        else{
+            await sleep(200);
         }
 
     }
