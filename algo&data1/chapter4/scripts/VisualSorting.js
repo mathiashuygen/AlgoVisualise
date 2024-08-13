@@ -189,6 +189,7 @@ export async function VisualBubbleSort(arrayToSort){
 
         clearIndexText(inner_idx);
         clearIndexText(unsorted_idx);
+
         if(reset){
             context.clearRect(0, 0, width, height);
             reset = false;
@@ -266,10 +267,8 @@ export async function VisualInsertionSort(arrayToSort){
         arrayToSort[idx1] = arrayToSort[idx2];
         arrayToSort[idx2] = keep;
 
-        stepVisualiser(idx1, idx2, "grey", "black", drawFillRect, arrayToSort);
-
+        stepVisualiser(inner_idx, outer_idx, "grey", "black", drawFillRect, arrayToSort);
         await sleep(defaultFunctionExecutionSpeed / executionSpeedFactor);
-
         stepVisualiser(idx1, idx2, "red", "black", drawFillRect, arrayToSort);
         await sleep(defaultFunctionExecutionSpeed / executionSpeedFactor);
         return 0;
@@ -315,49 +314,144 @@ export async function VisualInsertionSort(arrayToSort){
     outputArray.push("begin");
 
     while(true){
-        let loopToRun = outputArray[0];
 
-        if(loopToRun === "begin"){
+        if(reset){
+            context.clearRect(0, 0, width, height);
+            reset = false;
             outputArray = [];
-            outputArray.push("inner");
-            outputArray.push(outer_idx);
-            outputArray.push(inner_idx);
+            outputArray.push("begin");
+            return 0;
         }
-        
-        else if(loopToRun === "outer"){
-            outer_idx = outputArray[1];
-            inner_idx = outputArray[2];
-            
-            if(outer_idx < 0){
-                colorArray(arrayToSort, "green");
-                return 0;
-            }
-            else{
+
+        else if(!paused){
+            let loopToRun = outputArray[0];
+
+            if(loopToRun === "begin"){
                 outputArray = [];
                 outputArray.push("inner");
                 outputArray.push(outer_idx);
                 outputArray.push(inner_idx);
             }
+            
+            else if(loopToRun === "outer"){
+                outer_idx = outputArray[1];
+                inner_idx = outputArray[2];
+                
+                if(outer_idx < 0){
+                    colorArray(arrayToSort, "green");
+                    return 0;
+                }
+                else{
+                    outputArray = [];
+                    outputArray.push("inner");
+                    outputArray.push(outer_idx);
+                    outputArray.push(inner_idx);
+                }
+            }
+            else if(loopToRun === "inner"){
+                outer_idx = outputArray[1];
+                inner_idx = outputArray[2];
+                outputArray = [];
+                await inner_loop();
+            }
         }
-        else if(loopToRun === "inner"){
-            outer_idx = outputArray[1];
-            inner_idx = outputArray[2];
-            outputArray = [];
-            await inner_loop();
+        else{
+            await sleep(200);
         }
     }
-
-
-
-
-
-
-
 }
 
 
 
 
+
+
+
+export async function VisualSelectionSort(arrayToSort){
+
+
+    var outer_idx = 0;
+    var inner_idx = outer_idx + 1;
+    var smallest_idx = outer_idx;
+
+    var outputArray = [];
+
+
+
+    async function swap(idx1, idx2){
+        
+        let keep = arrayToSort[idx1];
+        arrayToSort[idx1] = arrayToSort[idx2];
+        arrayToSort[idx2] = keep;
+        /*
+        stepVisualiser(inner_idx, outer_idx, "grey", "black", drawFillRect, arrayToSort);
+        await sleep(defaultFunctionExecutionSpeed / executionSpeedFactor);
+        stepVisualiser(idx1, idx2, "red", "black", drawFillRect, arrayToSort);
+        await sleep(defaultFunctionExecutionSpeed / executionSpeedFactor);
+        */
+        return 0;
+    }
+
+
+
+    async function inner_loop(){
+        if(inner_idx >= arrayToSort.length){
+            await swap(outer_idx, smallest_idx);
+            outputArray.push("outer");
+            outputArray.push(outer_idx);
+        }
+        else if(outputArray[inner_idx] < outputArray[smallest_idx]){
+            outputArray.push("inner");
+            outputArray.push(inner_idx + 1);
+            outputArray.push(inner_idx);
+        }
+        else{
+            outputArray.push("inner");
+            outputArray.push(inner_idx + 1);
+            outputArray.push(smallest_idx);
+        }
+    }
+
+
+    outputArray.push("begin");
+
+    while(true){
+        var loopToRun = outputArray[0];
+
+        if(loopToRun === "begin"){
+            outputArray = [];
+            outputArray.push("inner");
+            outputArray.push(inner_idx);
+            outputArray.push(smallest_idx);
+        }
+        else if(loopToRun === "outer"){
+            outer_idx = outputArray[1];
+
+            if(outer_idx < (arrayToSort.length - 1)){
+                outer_idx = outer_idx + 1;
+                inner_idx = outer_idx + 1;
+                smallest_idx = outer_idx;
+
+                outputArray = [];
+                outputArray.push("inner");
+                outputArray.push(inner_idx);
+                outputArray.push(smallest_idx);
+            }
+            else{
+                //algorithm is done
+                displayArray(arrayToSort);
+                return 0;
+            }
+        }
+        else if(loopToRun === "inner"){
+            inner_idx = outputArray[1];
+            smallest_idx = outputArray[2];
+            outputArray = [];
+            await inner_loop();
+        }
+
+    }
+}
 
 
 
