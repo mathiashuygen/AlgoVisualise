@@ -383,24 +383,47 @@ export async function VisualSelectionSort(arrayToSort){
         let keep = arrayToSort[idx1];
         arrayToSort[idx1] = arrayToSort[idx2];
         arrayToSort[idx2] = keep;
-        /*
-        stepVisualiser(inner_idx, outer_idx, "grey", "black", drawFillRect, arrayToSort);
-        await sleep(defaultFunctionExecutionSpeed / executionSpeedFactor);
+    
         stepVisualiser(idx1, idx2, "red", "black", drawFillRect, arrayToSort);
         await sleep(defaultFunctionExecutionSpeed / executionSpeedFactor);
-        */
+        
         return 0;
     }
 
 
 
     async function inner_loop(){
+
+        //drawRect(smallest_idx, arrayToSort[smallest_idx], "orange", "black", drawFillRect);
+        
+
+        if(outer_idx === smallest_idx){
+            drawIndexText(inner_idx, rectYPos, "inner idx", "blue");
+            drawIndexText(outer_idx, rectYPos, "outer idx", "purple");
+            drawIndexText(smallest_idx, overlappingTextYPos, "smallest idx", "green");
+        }
+        else{
+            drawIndexText(inner_idx, rectYPos, "inner idx", "blue");
+            drawIndexText(outer_idx, rectYPos, "outer idx", "purple");
+            drawIndexText(smallest_idx, rectYPos, "smallest idx", "green");
+        }
+        await sleep(defaultFunctionExecutionSpeed / executionSpeedFactor);
+        
+
+        /*
+        if(!(inner_idx >= arrayToSort.length)){
+            stepVisualiser(inner_idx, smallest_idx, "grey", "black", drawFillRect, arrayToSort);
+            await sleep(defaultFunctionExecutionSpeed / executionSpeedFactor);
+
+        }
+            */
         if(inner_idx >= arrayToSort.length){
             await swap(outer_idx, smallest_idx);
+            drawRect(outer_idx, arrayToSort[outer_idx], "green", "black", drawFillRect);
             outputArray.push("outer");
             outputArray.push(outer_idx);
         }
-        else if(outputArray[inner_idx] < outputArray[smallest_idx]){
+        else if(arrayToSort[inner_idx] < arrayToSort[smallest_idx]){
             outputArray.push("inner");
             outputArray.push(inner_idx + 1);
             outputArray.push(inner_idx);
@@ -416,6 +439,11 @@ export async function VisualSelectionSort(arrayToSort){
     outputArray.push("begin");
 
     while(true){
+
+        clearIndexText(outer_idx);
+        clearIndexText(inner_idx);
+        clearIndexText(smallest_idx);
+
         var loopToRun = outputArray[0];
 
         if(loopToRun === "begin"){

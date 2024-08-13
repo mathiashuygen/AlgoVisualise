@@ -5,9 +5,11 @@ export const height = window.innerHeight/1.5;
 canvas.width = width;
 canvas.height = height;
 const rectDimension = height/5;
-export const maxAmountOfRects = Math.floor(width/rectDimension);
+
 export const rectYPos = height/2 - rectDimension
 export const overlappingTextYPos = rectYPos + rectDimension/3;
+export const xPosOffset = 2;
+export const maxAmountOfRects = Math.floor(width/rectDimension) - xPosOffset;
 
 
 
@@ -23,22 +25,22 @@ export function drawStokeRect(x, y, w, h){
 
 export function drawRect(xPos, value, rectColor, textColor, rectangleDrawFunc){
     context.fillStyle = rectColor;
-    rectangleDrawFunc((rectDimension * xPos), rectYPos, rectDimension, rectDimension);
+    rectangleDrawFunc((rectDimension * xPos) + (rectDimension * xPosOffset), rectYPos, rectDimension, rectDimension);
     let textSize = rectDimension/ (1 + Math.floor(Math.log10(Number(value))));
 
     //draws the char in a rectangle
     context.fillStyle = textColor;
     context.font = `${textSize}px arial`;
-    context.fillText(value, (rectDimension * xPos) + (rectDimension/10), rectYPos + rectDimension - ((1/5) * rectDimension));
+    context.fillText(value, (rectDimension * xPos) + (rectDimension * xPosOffset) + (rectDimension/10), rectYPos + rectDimension - ((1/5) * rectDimension));
 }
 
 export function drawIndexText(xPos, yPos, indexText, textColor){
     const yPosOffset = rectDimension/5;
     context.fillStyle = textColor;
     context.font = `${rectDimension/7}px arial`;
-    context.fillText(indexText, (rectDimension *  xPos) + (rectDimension/10), yPosOffset + yPos + rectDimension);
+    context.fillText(indexText, (rectDimension * xPos) + (rectDimension * xPosOffset) + (rectDimension/10), yPosOffset + yPos + rectDimension);
 }
 
 export function clearIndexText(xPos){
-    context.clearRect( (rectDimension * xPos), rectYPos + rectDimension, width, height)
+    context.clearRect( (rectDimension * xPos) + (rectDimension * xPosOffset), rectYPos + rectDimension, width, height)
 }
