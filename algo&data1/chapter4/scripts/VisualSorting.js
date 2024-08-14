@@ -513,6 +513,89 @@ export async function VisualSelectionSort(arrayToSort){
 
 
 
+export async function VisualQuickSort(arrayToSort){
+
+    async function swap(idx1, idx2){
+        
+        let keep = arrayToSort[idx1];
+        arrayToSort[idx1] = arrayToSort[idx2];
+        arrayToSort[idx2] = keep;
+                                                                                 
+        return 0;
+    }
+    
+
+    async function shift_to_right(i , x){
+        if(x < arrayToSort[i]){
+            return shift_to_right(i + 1, x);
+        }
+        else{
+            return i;
+        }
+    }
+
+
+    async function shift_to_left(j , x){
+        if(x < arrayToSort[j]){
+            return shift_to_left(j - 1, x);
+        }
+        else{
+            return j;
+        }
+    }
+
+
+
+    async function partition(pivot, i, j){
+        let shifted_i = shift_to_right(i, pivot);
+        let shifted_j = shift_to_left(j, pivot);
+
+        if(shifted_i < shifted_j){
+            swap(shifted_i, shifted_j);
+            return partition(shifted_i, shifted_j - 1);
+        }
+        else{
+            return shifted_j;
+        }
+    }
+
+
+    async function quickSortMain(l, r){
+        if(l < r){
+            if(arrayToSort[r] < arrayToSort[l]){
+                swap(l, r);
+            }
+            
+            let m = partition(arrayToSort[l], l + 1, r - 1);
+            swap(l, m);
+            quickSortMain(l, m - 1);
+            quickSortMain(m + 1, r);
+                
+            
+        }
+        else{
+            return 0;
+        }
+    }
+
+
+    quickSortMain(0, arrayToSort.length - 1);
+
+    displayArray(arrayToSort);
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
