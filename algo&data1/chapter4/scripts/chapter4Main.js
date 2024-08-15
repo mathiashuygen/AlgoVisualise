@@ -24,10 +24,10 @@ resetButton.addEventListener("click", ()=>{
 
 function handleUserSubmit(){
     if(rectAmount < maxAmountOfRects){
-        let userVal = userInput.value
+        let userVal = userInput.value;
 
         if(userVal != ""){
-            drawRect(rectAmount, userVal, "red", "black", drawFillRect)
+            drawRect(rectAmount, userVal, "red", "black", drawFillRect);
             rectAmount = rectAmount + 1;
             userInputArray.push(Number(userVal));
             userInput.value = "";

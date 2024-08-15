@@ -517,10 +517,14 @@ export async function VisualQuickSort(arrayToSort){
 
     async function swap(idx1, idx2){
         
+        stepVisualiser(idx1, idx2, "grey", "black", drawFillRect, arrayToSort);
+        await sleep(defaultFunctionExecutionSpeed / executionSpeedFactor);
+
         let keep = arrayToSort[idx1];
         arrayToSort[idx1] = arrayToSort[idx2];
         arrayToSort[idx2] = keep;
-        stepVisualiser()
+        stepVisualiser(idx1, idx2, "red", "black", drawFillRect, arrayToSort);
+        await sleep(defaultFunctionExecutionSpeed / executionSpeedFactor);
                                                                                  
         return 0;
     }
@@ -550,7 +554,7 @@ export async function VisualQuickSort(arrayToSort){
     async function partition(pivot, i, j){
         let shifted_i = await shift_to_right(i, pivot);
         let shifted_j = await shift_to_left(j, pivot);
-
+        
         if(shifted_i < shifted_j){
             await swap(shifted_i, shifted_j);
             return await partition(pivot, shifted_i, shifted_j - 1);
@@ -562,24 +566,47 @@ export async function VisualQuickSort(arrayToSort){
 
 
     async function quickSortMain(l, r){
-        drawIndexText(l, rectYPos, "l", "black");
-        drawIndexText(r, overlappingTextYPos, "r", "black");
+
+        if(l === r){
+            drawIndexText(r, rectYPos, "r", "black");
+            drawIndexText(l, overlappingTextYPos, "pivot", "black");
+        }
+        else{
+            drawIndexText(r, rectYPos, "r", "black");
+            drawIndexText(l, rectYPos, "pivot", "black");
+        }
+        
         if(l < r){
             if(arrayToSort[r] < arrayToSort[l]){
                 await swap(l, r);
+                await sleep(defaultFunctionExecutionSpeed / executionSpeedFactor);
             }
-            drawIndexText(l, overlappingTextYPos, "pivot", "black");
             let m = await partition(arrayToSort[l], l + 1, r - 1);
+            if(m === l){
+                drawIndexText(m, overlappingTextYPos, "m", "black");
+                await sleep(defaultFunctionExecutionSpeed / executionSpeedFactor);
+            }
+            else{
+                drawIndexText(m, rectYPos, "m", "black");
+                await sleep(defaultFunctionExecutionSpeed / executionSpeedFactor);
+            }
             await swap(l, m);
+            clearIndexText(l);
+            clearIndexText(r);
             await quickSortMain(l, m - 1);
             await quickSortMain(m + 1, r);
+            
             return 0;
         }
+        
+        clearIndexText(l);
+        clearIndexText(r);
+        
     }
 
 
     await quickSortMain(0, arrayToSort.length - 1);
-    displayArray(arrayToSort);
+    colorArray(arrayToSort, "green");
    
 
 

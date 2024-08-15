@@ -21,8 +21,6 @@ export function drawStokeRect(x, y, w, h){
     context.strokeRect(x, y, w, h);
 }
 
-
-
 export function drawRect(xPos, value, rectColor, textColor, rectangleDrawFunc){
     context.fillStyle = rectColor;
     rectangleDrawFunc((rectDimension * xPos) + (rectDimension * xPosOffset), rectYPos, rectDimension, rectDimension);
