@@ -124,8 +124,7 @@ export async function VisualBubbleSort(arrayToSort){
         await sleep(defaultFunctionExecutionSpeed / executionSpeedFactor);
 
         stepVisualiser(idx1, idx2, "red", "black", drawFillRect, arrayToSort);
-        await sleep(defaultFunctionExecutionSpeed / executionSpeedFactor);
-        
+        await sleep(defaultFunctionExecutionSpeed / executionSpeedFactor); 
         return true;
     }
 
@@ -618,7 +617,15 @@ export async function VisualQuickSort(arrayToSort){
 
 
 
+function VisualMergeSort(arrayToSort){
 
+
+	
+
+
+
+
+}
 
 
 
