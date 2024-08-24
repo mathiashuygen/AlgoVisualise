@@ -38,8 +38,6 @@ export function drawRectWithPattern(pattern, x, y, rectDimension, textSize, stri
     context.fillText(pattern[stringIndex], (rectDimension * x) + (rectDimension/10), 2*rectDimension - ((1/5) * rectDimension));
 }
 
-
-
 export function drawRectWithText(text, x, y, rectDimension, textSize, rectColor, textColor, rectangleDrawFunc){
     context.fillStyle = rectColor;
     rectangleDrawFunc(rectDimension * x, y, rectDimension, rectDimension);
