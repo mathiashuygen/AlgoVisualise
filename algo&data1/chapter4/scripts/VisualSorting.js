@@ -627,8 +627,7 @@ function VisualMergeSort(arrayToSort){
 		working.fill(0, 0, r - p + 1);
 		function copy-back(params) {
 			
-		}
-	}	
+		} }	
 
 
 
