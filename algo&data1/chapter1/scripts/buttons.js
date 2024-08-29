@@ -19,4 +19,4 @@ export function changeSliderValue(newVal){
 
 
 
-console.log("dit is een string")
+
