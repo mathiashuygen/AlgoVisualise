@@ -16,3 +16,7 @@ export const backButton = document.querySelector(".backButton");
 export function changeSliderValue(newVal){
     sliderVal.textContent = newVal;
 }
+
+
+
+
