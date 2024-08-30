@@ -1,5 +1,5 @@
 import { algorithmPicker,  userInput, addValueButton, startAlgorithmButton, resetButton} from "./buttons.js";
-import { maxAmountOfRects, drawRect, drawStokeRect, drawFillRect } from "./drawLogic.js";
+import { maxAmountOfRects, drawRect, drawStokeRect, drawFillRect, rectYPos } from "./drawLogic.js";
 import { VisualBubbleSort, VisualInsertionSort, VisualSelectionSort, VisualQuickSort, VisualMergeSort } from "./VisualSorting.js";
 
 
@@ -27,7 +27,7 @@ function handleUserSubmit(){
         let userVal = userInput.value;
 
         if(userVal != ""){
-            drawRect(rectAmount, userVal, "red", "black", drawFillRect);
+            drawRect(rectAmount, rectYPos, userVal, "red", "black", drawFillRect);
             rectAmount = rectAmount + 1;
             userInputArray.push(Number(userVal));
             userInput.value = "";
