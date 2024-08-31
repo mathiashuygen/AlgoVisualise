@@ -1,14 +1,14 @@
 export const canvas = document.querySelector(".AlgorithmVisualiser");
 export const context = canvas.getContext("2d");
 export const width = window.innerWidth - 10;
-export const height = window.innerHeight/1.5;
+export const height = window.innerHeight;
 canvas.width = width;
 canvas.height = height;
-export const rectDimension = height/7;
+export const rectDimension = height/11;
 
 export const rectYPos = height/2 - rectDimension*3;
 export const overlappingTextYPos = rectYPos + rectDimension/3;
-export const xPosOffset = 2;
+export const xPosOffset = 4;
 export const maxAmountOfRects = Math.floor(width/rectDimension) - xPosOffset;
 
 

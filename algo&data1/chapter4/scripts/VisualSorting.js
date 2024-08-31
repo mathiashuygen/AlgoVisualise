@@ -547,12 +547,11 @@ export async function VisualMergeSort(arrayToSort) {
       }
     }
 
-    function merge_iter(k, i, j) {
-      if (i <= q && j <= r) {
+    function merge_iter(k, i, j) { if (i <= q && j <= r) {
         let low1 = mergeArray[i];
         let low2 = mergeArray[j];
 
-        draw
+        
 
         if (low1 < low2) {
           workingArray[k] = low1;
@@ -571,18 +570,18 @@ export async function VisualMergeSort(arrayToSort) {
     merge_iter(0, p, q + 1);
   }
 
-  async function merge_sort_rec(array, p, r) {
+  async function merge_sort_rec(array, p, r, recurDepth, shiftedRight, shiftedLeft) {
     if (p < r) {
       //every single time this if check succeeds the part of the array from p to r get split in two => draw these two new arrays
-      recursionDepthCounter += 1;
+
       let q = Math.floor((r + p) / 2);
 
       drawPartArray(
         array,
         p,
         q,
-        0,
-        recursionDepthCounter * spacing + rectYPos,
+        shiftedLeft,
+        recurDepth * spacing + rectYPos,
         "red",
       );
 
@@ -590,18 +589,18 @@ export async function VisualMergeSort(arrayToSort) {
         array,
         q + 1,
         r,
-        1,
-        recursionDepthCounter * spacing + rectYPos,
+        shiftedRight,
+        recurDepth * spacing + rectYPos,
         "red",
       );
 
-      merge_sort_rec(array, p, q);
-      merge_sort_rec(array, q + 1, r);
-      merge(array, p, q, r, recursionDepthCounter);
+      merge_sort_rec(array, p, q, recurDepth + 1, shiftedRight, shiftedLeft - 1);
+      merge_sort_rec(array, q + 1, r, recurDepth + 1, shiftedRight + 1, shiftedRight);
+      merge(array, p, q, r, recurDepth);
     } else {
       return 0;
     }
   }
 
-  merge_sort_rec(arrayToSort, 0, arrayToSort.length - 1);
+  merge_sort_rec(arrayToSort, 0, arrayToSort.length - 1, 1, 1, -1);
 }
