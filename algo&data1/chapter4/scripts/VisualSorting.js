@@ -570,7 +570,7 @@ export async function VisualMergeSort(arrayToSort) {
     merge_iter(0, p, q + 1);
   }
 
-  async function merge_sort_rec(array, p, r, recurDepth, shiftedRight, shiftedLeft) {
+  async function merge_sort_rec(array, p, r, recurDepth, shiftedLeft, shiftedRight) {
     if (p < r) {
       //every single time this if check succeeds the part of the array from p to r get split in two => draw these two new arrays
 
@@ -589,18 +589,18 @@ export async function VisualMergeSort(arrayToSort) {
         array,
         q + 1,
         r,
-        shiftedRight,
+        q - (shiftedRight - (recurDepth - 1)) - (q + 1),
         recurDepth * spacing + rectYPos,
         "red",
       );
 
-      merge_sort_rec(array, p, q, recurDepth + 1, shiftedRight, shiftedLeft - 1);
-      merge_sort_rec(array, q + 1, r, recurDepth + 1, shiftedRight + 1, shiftedRight);
+      merge_sort_rec(array, p, q, recurDepth + 1, shiftedLeft - 1, shiftedRight);
+      merge_sort_rec(array, q + 1, r, recurDepth + 1,  shiftedLeft, (q - (shiftedRight - (recurDepth - 1)) - (q + 1)) + 1);
       merge(array, p, q, r, recurDepth);
     } else {
       return 0;
     }
   }
 
-  merge_sort_rec(arrayToSort, 0, arrayToSort.length - 1, 1, 1, -1);
+  merge_sort_rec(arrayToSort, 0, arrayToSort.length - 1, 1, -1, 1);
 }
