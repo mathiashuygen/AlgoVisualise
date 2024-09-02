@@ -1,24 +1,88 @@
-<!DOCTYPE html>
+<!doctype html>
 
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="author" content="Mathias Huygen">
-    <title>Chapter 1 algorithms </title>
+  <meta charset="UTF-8" />
+  <meta name="author" content="Mathias Huygen" />
+  <title>Chapter 1 algorithms</title>
 
-    <link rel="icon" href="courseIcon.jpeg" type="image/x-icon">
-    <link rel="stylesheet" href="../../main.css" type="text/css">
-
+  <link rel="icon" href="courseIcon.jpeg" type="image/x-icon" />
+  <link rel="stylesheet" href="chapter2.css" type="text/css" />
+  <script src="scripts/chapter2-main.js" type="module" defer></script>
+  <script src="scripts/buttons.js" type="module" defer></script>
 </head>
 
-
 <body>
-    <h1>Chapter 2 algorithms</h1>
+  <section class="menuBar">
+    <div class="menuSection">
+      <a href="../../main/index.html" class="menuLink">
+        <p>Home</p>
+      </a>
+    </div>
 
+    <div class="menuSection">
+      <a href="../../menu/about/about.html" class="menuLink">
+        <p>About</p>
+      </a>
+    </div>
+
+    <div class="menuSection">
+      <a href="../../menu/contact/contact.html" class="menuLink">
+        <p>Contact</p>
+      </a>
+    </div>
+  </section>
+
+  <div class="selector">
+    <label for="algorithms">Choose implementation:</label>
+    <select name="AlgorithmPicker" id="algorithms" class="algorithmPicker">
+      <option value="Vectorial">Vectorial</option>
+      <option value="SingleLinked">Single linked</option>
+      <option value="DoubleLinked">Double linked</option>
+      <option value="ImprovedDoubleLinked">Improved double linked</option>
+    </select>
+  </div>
+
+  <section class="userInput">
+    <div class="numberInput">
+      <label for="numberField">Enter a value:</label>
+      <input type="number" id="numberField" class="numberField" />
+    </div>
+
+    <div class="positionInput">
+      <label for="positionField">Enter a position:</label>
+      <input type="number" id="positionField" class="numberField" />
+    </div>
+
+    <div id="optional" class="optionalVectorLength"></div>
+
+    <br />
+    <div class="procedures">
+      <button type="button" class="addValueBefore">make</button>
+      <button type="button" class="addValueBefore">add-before!</button>
+      <button type="button" class="addValueAfter">add-after!</button>
+      <button type="button" class="length">length</button>
+      <button type="button" class="first">first</button>
+      <button type="button" class="last">last</button>
+      <button type="button" class="hasNext">has-next?</button>
+      <button type="button" class="hasPrevious">has-previous?</button>
+      <button type="button" class="next">next</button>
+      <button type="button" class="previous">previous</button>
+      <button type="button" class="peek">peek</button>
+      <button type="button" class="update">update!</button>
+      <button type="button" class="delete">delete!</button>
+      <button type="button" class="reset">↺</button>
+      <label for="myRange">Execution speed:</label>
+      <input type="range" min="1" max="6" value="1" class="slider" id="myRange" />
+      <span class="valueVisual">x1</span>
+      <button type="button" class="pauseButton">||</button>
+    </div>
+  </section>
+
+  <canvas class="AlgorithmVisualiser">
+    <p>canvas that visualises the steps of the algorithm</p>
+  </canvas>
 </body>
-
-
-
-
 
 </html>

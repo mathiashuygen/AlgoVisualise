@@ -79,6 +79,7 @@ export function displayArray(array) {
 function drawPartArray(array, from, until, xPosSpacing, YPos, rectColor) {
   for (let i = from; i <= until; i++) {
     drawRect(i + xPosSpacing, YPos, array[i], rectColor, "black", drawFillRect);
+    console.log("drawpart");
   }
 }
 
@@ -524,9 +525,17 @@ function makeArray(length) {
   return outputArray;
 }
 
+
+
+
+
+
+//archived visual merge sort because I really have no idea how to properly visualise it. Moving on to chapter 2.
+/*
 export async function VisualMergeSort(arrayToSort) {
-  var recursionDepthCounter = 0;
   const spacing = rectDimension / 3 + rectDimension;
+  var pairs = 0;
+
 
   function merge(mergeArray, p, q, r, recursionDepth) {
     let workingArray = makeArray(r - p + 1);
@@ -547,11 +556,10 @@ export async function VisualMergeSort(arrayToSort) {
       }
     }
 
-    function merge_iter(k, i, j) { if (i <= q && j <= r) {
+    function merge_iter(k, i, j) {
+      if (i <= q && j <= r) {
         let low1 = mergeArray[i];
         let low2 = mergeArray[j];
-
-        
 
         if (low1 < low2) {
           workingArray[k] = low1;
@@ -570,37 +578,31 @@ export async function VisualMergeSort(arrayToSort) {
     merge_iter(0, p, q + 1);
   }
 
-  async function merge_sort_rec(array, p, r, recurDepth, shiftedLeft, shiftedRight) {
+  async function merge_sort_rec(array, p, r, recurDepth) {
     if (p < r) {
       //every single time this if check succeeds the part of the array from p to r get split in two => draw these two new arrays
 
       let q = Math.floor((r + p) / 2);
+      if (r - p === 1) {
+        
+        drawPartArray(array, p, p, -recurDepth + pairs, recurDepth * spacing + rectYPos, "red");
 
-      drawPartArray(
-        array,
-        p,
-        q,
-        shiftedLeft,
-        recurDepth * spacing + rectYPos,
-        "red",
-      );
+        drawPartArray(array, r, r, -recurDepth + pairs + 1, recurDepth * spacing + rectYPos, "red");
 
-      drawPartArray(
-        array,
-        q + 1,
-        r,
-        q - (shiftedRight - (recurDepth - 1)) - (q + 1),
-        recurDepth * spacing + rectYPos,
-        "red",
-      );
+        pairs += 2;
+      }
 
-      merge_sort_rec(array, p, q, recurDepth + 1, shiftedLeft - 1, shiftedRight);
-      merge_sort_rec(array, q + 1, r, recurDepth + 1,  shiftedLeft, (q - (shiftedRight - (recurDepth - 1)) - (q + 1)) + 1);
+      if (r - p === 2) {
+        drawPartArray(array, r, r, -recurDepth + pairs, recurDepth * spacing + rectYPos, "red");
+      }
+      merge_sort_rec(array, p, q, recurDepth + 1);
+      merge_sort_rec(array, q + 1, r, recurDepth + 1);
       merge(array, p, q, r, recurDepth);
     } else {
       return 0;
     }
   }
-
-  merge_sort_rec(arrayToSort, 0, arrayToSort.length - 1, 1, -1, 1);
+  merge_sort_rec(arrayToSort, 0, arrayToSort.length - 1, 1);
 }
+
+*/

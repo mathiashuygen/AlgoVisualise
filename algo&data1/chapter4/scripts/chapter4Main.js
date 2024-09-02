@@ -69,8 +69,8 @@ async function algorithmStarter(){
             await VisualQuickSort(userInputArray);
     
         case "MergeSort":
-            await VisualMergeSort(userInputArray);
-                
+            //await VisualMergeSort(userInputArray);
+              return 0;  
         case "Heapsort":
             return 0;
     }

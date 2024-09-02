@@ -8,7 +8,7 @@ export const rectDimension = height/11;
 
 export const rectYPos = height/2 - rectDimension*3;
 export const overlappingTextYPos = rectYPos + rectDimension/3;
-export const xPosOffset = 4;
+export const xPosOffset = 5;
 export const maxAmountOfRects = Math.floor(width/rectDimension) - xPosOffset;
 
 
