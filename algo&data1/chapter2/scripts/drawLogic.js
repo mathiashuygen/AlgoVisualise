@@ -4,3 +4,4 @@ export const width = window.innerWidth - 10;
 export const height = window.innerHeight/1.5;
 canvas.width = width;
 canvas.height = height;
+
