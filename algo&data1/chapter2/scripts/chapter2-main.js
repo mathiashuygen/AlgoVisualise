@@ -86,18 +86,25 @@ newButton.addEventListener("click", handleNew);
 addBeforeButton.addEventListener("click", ()=>{
   let valueToAdd = valueField.value;
   let position = positionField.value;
-
+  
   let positionArray = [];
+  if(!(position === "")){
+    positionArray.push(position);
+  }
+
   
-  
-  add_before(currentImplementation, position, valueToAdd);
+  add_before(currentImplementation, valueToAdd, positionArray);
 })
 
 addAfterButton.addEventListener("click", ()=>{
   let valueToAdd = valueField.value;
   let position = positionField.value
   
-  add_after(currentImplementation, position, valueToAdd);
+  let positionArray = [];
+  if(!(position === "")){
+    positionArray.push(position);
+  }
+  add_after(currentImplementation, positionArray, valueToAdd);
 })
 
 lengthButton.addEventListener("click", ()=>{

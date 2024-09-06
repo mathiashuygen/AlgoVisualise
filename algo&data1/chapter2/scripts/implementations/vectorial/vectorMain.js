@@ -30,7 +30,7 @@ export class vector {
   }
 
   next(position) {
-    if (!(this.has_next(position))) {
+    if (!this.has_next(position)) {
       console.log("error, no next");
     } else {
       return pos + 1;
@@ -38,8 +38,8 @@ export class vector {
   }
 
   previous(position) {
-    if (!(this.has_previous(position))) {
-      console.log("error, no next");
+    if (!this.has_previous(position)) {
+      console.log("error, no previous");
     } else {
       return pos - 1;
     }
@@ -49,12 +49,12 @@ export class vector {
     return this.size;
   }
 
-  empty() {
+  get empty() {
     return 0 === this.size;
   }
 
   full() {
-    return this.size === this.vectorlength;
+    return this.size == this.vectorlength;
   }
 
   storage_move_right(i, j) {
@@ -62,7 +62,6 @@ export class vector {
       this.vector[idx + 1] = this.vector[idx];
     }
   }
-
   storage_move_left(i, j) {
     for (let idx = i; idx <= j; idx++) {
       this.vector[idx - 1] = this.vector[idx];
@@ -83,18 +82,17 @@ export class vector {
       this.vector[position] = value;
     }
   }
-  detach_middle(position){
+  detach_middle(position) {
     let free = this.size;
     this.storage_move_left(position + 1, free - 1);
+    this.size = free - 1;
   }
-
 
   detach_first() {
     this.detach_middle(0);
   }
-  
 
-  detach_last(){
+  detach_last() {
     let free = this.size;
     this.size = free - 1;
   }
@@ -106,7 +104,7 @@ export class vector {
     this.size = free + 1;
   }
   attach_first(value) {
-   this.attach_middle(value, -1);
+    this.attach_middle(value, -1);
   }
   attach_last(value) {
     let free = this.size;
