@@ -1,6 +1,6 @@
 import { algorithmPicker,  userInput, addValueButton, startAlgorithmButton, resetButton} from "./buttons.js";
 import { maxAmountOfRects, drawRect, drawStokeRect, drawFillRect, rectYPos } from "./drawLogic.js";
-import { VisualBubbleSort, VisualInsertionSort, VisualSelectionSort, VisualQuickSort, VisualMergeSort } from "./VisualSorting.js";
+import { VisualBubbleSort, VisualInsertionSort, VisualSelectionSort, VisualQuickSort} from "./VisualSorting.js";
 
 
 
