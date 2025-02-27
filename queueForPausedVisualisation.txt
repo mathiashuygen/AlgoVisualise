@@ -1,0 +1,1 @@
+Je kan bij de uitvoer van een algoritme de stappen die het algoritme neemt encoderen en wegschrijven naar een queue, daarna kan je de queue een voor een gaan poppen en zo het algoritme visualiseren.
